@@ -95,7 +95,7 @@
         </div>
       </div>
       <div style="display:flex;flex-direction:column;align-items:flex-end;gap:16px;">
-        <button onClick="{{ toggleSound }}" style="display:inline-flex;align-items:center;gap:9px;padding:11px 17px;background:rgba(247,248,246,.12);border:1px solid rgba(247,248,246,.38);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);color:#F7F8F6;font-family:'Jost';font-weight:400;font-size:10px;letter-spacing:.24em;text-transform:uppercase;cursor:pointer;transition:background .4s ease;padding-left:calc(17px + .24em);" style-hover="background:rgba(247,248,246,.24);"><span style="display:inline-block;width:7px;height:7px;background:#CFEFF2;"></span>{{ soundLabel }}</button>
+        <button onClick="{{ toggleSound }}" style="display:inline-flex;align-items:center;gap:6px;padding:7px 10px;background:rgba(247,248,246,.06);border:1px solid rgba(247,248,246,.2);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);color:rgba(247,248,246,.72);font-family:'Jost';font-weight:400;font-size:9px;letter-spacing:.18em;text-transform:uppercase;cursor:pointer;transition:background .4s ease,color .4s ease,border-color .4s ease;padding-left:calc(10px + .18em);" style-hover="background:rgba(247,248,246,.12);color:#F7F8F6;border-color:rgba(247,248,246,.34);"><span style="display:inline-block;width:4px;height:4px;background:#CFEFF2;opacity:.75;"></span>{{ soundLabel }}</button>
         <div style="font-family:'Jost';font-weight:400;font-size:11px;letter-spacing:.32em;text-transform:uppercase;color:rgba(247,248,246,.85);text-align:right;">(01) — Liquid femininity</div>
       </div>
     </div>
@@ -413,7 +413,7 @@ class Component extends DCLogic {
       notNotified: !this.state.notified,
       email: this.state.email,
       soundOn: this.state.soundOn,
-      soundLabel: this.state.soundOn ? "Sound \u00b7 On" : "Sound \u00b7 Off",
+      soundLabel: this.state.soundOn ? "On" : "Off",
       toggleSound: () => {
         const v = document.querySelector("[data-hero-video]");
         if (!v) return;
