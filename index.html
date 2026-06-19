@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;0,6..96,600;1,6..96,400;1,6..96,500&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0;background:#FFFDF8;-webkit-font-smoothing:antialiased;}
+  img{display:block;max-width:100%;}
+  ::selection{background:#CFEFF2;color:#1F1E1B;}
+  input::placeholder{color:#a9a59c;opacity:1;}
+  @keyframes milDrift{0%{transform:scale(1.05);}100%{transform:scale(1.14);}}
+  @keyframes revealIn{from{opacity:0;transform:translateY(42px);}to{opacity:1;transform:none;}}
+  @keyframes lineIn{from{transform:scaleX(0);}to{transform:scaleX(1);}}
+  @keyframes lineYIn{from{transform:scaleY(0);}to{transform:scaleY(1);}}
+  @keyframes parDrift{from{transform:translateY(-5%) scale(1.14);}to{transform:translateY(5%) scale(1.14);}}
+  @keyframes marqueeScroll{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+  [data-nav]{background:rgba(255,253,248,0);color:#1F1E1B;border-bottom:1px solid rgba(31,30,27,0);}
+  html[data-nav-scrolled] [data-nav]{background:rgba(255,253,248,.9);border-bottom-color:rgba(31,30,27,.08);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);}
+  [data-hero]{opacity:1;transform:none;}
+  [data-reveal]{animation:revealIn 1.4s cubic-bezier(.16,1,.3,1) both;animation-timeline:view();animation-range:entry 2% cover 30%;}
+  [data-reveal-line]{transform-origin:left center;animation:lineIn cubic-bezier(.16,1,.3,1) both;animation-timeline:view();animation-range:entry 6% cover 26%;}
+  [data-reveal-yline]{transform-origin:top center;animation:lineYIn cubic-bezier(.16,1,.3,1) both;animation-timeline:view();animation-range:entry 8% cover 40%;}
+  [data-parallax]{animation:parDrift linear both;animation-timeline:view();animation-range:cover 0% cover 100%;}
+  [data-marquee]{animation:marqueeScroll linear both;animation-timeline:scroll(root);}
+  @media (prefers-reduced-motion:reduce){[data-hero],[data-reveal],[data-reveal-line],[data-reveal-yline],[data-parallax],[data-marquee]{animation:none;opacity:1;transform:none;}}
+  /* ---- Responsive (media queries can't be inline) ---- */
+  @media (max-width:900px){
+    [data-el-desc]{display:none !important;}
+    [data-preview]{grid-template-columns:repeat(2,1fr) !important;}
+  }
+  @media (max-width:680px){
+    [data-hero-float]{display:none !important;}
+    [data-nav-hide]{display:none !important;}
+    [data-story-grid]{grid-template-columns:1fr !important;}
+    [data-story-detail]{position:static !important;width:62% !important;margin:-40px 0 0 auto !important;}
+    [data-water-grid]{grid-template-columns:1fr !important;}
+    [data-water-float]{display:none !important;}
+    [data-collage]{flex-direction:column !important;align-items:stretch !important;}
+    [data-collage-col]{margin-top:0 !important;max-width:none !important;}
+    [data-collage-overlap]{position:static !important;width:56% !important;margin:14px 0 0 auto !important;}
+    [data-preview]{grid-template-columns:1fr !important;}
+    [data-el-row]{gap:18px !important;}
+  }
+</style>
+</helmet>
+
+<div style="font-family:'Jost',sans-serif;color:#1F1E1B;background:#FFFDF8;overflow-x:clip;position:relative;">
+
+  <nav data-nav style="position:fixed;top:0;left:0;right:0;z-index:60;display:flex;align-items:center;justify-content:space-between;padding:20px clamp(20px,4vw,52px);transition:background .6s ease,border-color .6s ease,backdrop-filter .6s ease;">
+    <a href="#top" style="font-family:'Bodoni Moda',serif;font-weight:500;font-size:19px;letter-spacing:.4em;color:inherit;text-decoration:none;padding-left:.4em;">MILAURE</a>
+    <div style="display:flex;gap:clamp(18px,3vw,40px);align-items:center;">
+      <a href="#story" style="font-family:'Jost';font-weight:400;font-size:11px;letter-spacing:.26em;text-transform:uppercase;color:inherit;text-decoration:none;opacity:.85;transition:opacity .4s ease;" style-hover="opacity:.5;">Story</a>
+      <a data-nav-hide href="#collections" style="font-family:'Jost';font-weight:400;font-size:11px;letter-spacing:.26em;text-transform:uppercase;color:inherit;text-decoration:none;opacity:.85;transition:opacity .4s ease;" style-hover="opacity:.5;">Collections</a>
+      <a data-nav-hide href="#preview" style="font-family:'Jost';font-weight:400;font-size:11px;letter-spacing:.26em;text-transform:uppercase;color:inherit;text-decoration:none;opacity:.85;transition:opacity .4s ease;" style-hover="opacity:.5;">First Drop</a>
+      <a href="#launch" style="font-family:'Jost';font-weight:400;font-size:11px;letter-spacing:.26em;text-transform:uppercase;color:inherit;text-decoration:none;opacity:.85;transition:opacity .4s ease;" style-hover="opacity:.5;">Launch</a>
+    </div>
+  </nav>
+
+  <!-- ============ HERO — full-bleed video, giant MILAURE spanning + overlapping ============ -->
+  <!-- assets/hero.mp4 : soft cinematic video — water / sea / girl on boat / skin / fabric / sunlight -->
+  <header id="top" style="position:relative;height:100vh;min-height:640px;width:100%;overflow:hidden;background:#10171a;">
+    <video data-hero-video style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;animation:milDrift 30s ease-in-out infinite alternate;">
+      <source src="assets/hero.mp4" type="video/mp4">
+    </video>
+    <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,26,28,.36) 0%,rgba(18,26,28,.06) 26%,rgba(18,26,28,.06) 54%,rgba(18,26,28,.46) 100%);"></div>
+
+    <!-- giant wordmark, spanning + overlapping the upper frame -->
+    <h1 data-hero data-hero-title style="position:absolute;top:clamp(82px,13vh,164px);left:0;right:0;text-align:center;padding:0 12px;font-family:'Bodoni Moda',serif;font-weight:500;font-size:clamp(56px,19vw,330px);line-height:.86;letter-spacing:.02em;color:#FFFDF8;margin:0;text-shadow:0 8px 90px rgba(16,23,26,.45);padding-left:calc(12px + .02em);">MILAURE</h1>
+
+    <!-- floating campaign detail, layered over the type -->
+    <!-- assets/satin-sand.jpg : floating campaign detail -->
+    <div data-hero-float style="position:absolute;right:clamp(20px,6vw,118px);top:clamp(150px,26vh,320px);width:clamp(120px,12vw,196px);border-radius:12px;overflow:hidden;aspect-ratio:3/4;box-shadow:0 34px 70px -30px rgba(16,23,26,.55);border:5px solid rgba(255,253,248,.92);">
+      <img src="assets/satin-sand.jpg" alt="MILAURE campaign detail" style="width:100%;height:100%;object-fit:cover;">
+    </div>
+
+    <!-- top badge -->
+    <div data-hero style="position:absolute;top:clamp(78px,9vh,104px);right:clamp(20px,4vw,52px);display:inline-flex;align-items:center;padding:9px 16px;border-radius:999px;background:rgba(255,253,248,.16);border:1px solid rgba(255,253,248,.4);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);font-family:'Jost';font-weight:400;font-size:10px;letter-spacing:.26em;text-transform:uppercase;color:#FFFDF8;padding-left:calc(16px + .26em);">Launching Soon</div>
+
+    <!-- bottom content cluster -->
+    <div data-hero style="position:absolute;left:clamp(20px,4vw,56px);right:clamp(20px,4vw,56px);bottom:clamp(34px,6vh,74px);display:flex;align-items:flex-end;justify-content:space-between;gap:30px;flex-wrap:wrap;color:#FFFDF8;">
+      <div style="max-width:440px;">
+        <div style="font-family:'Jost';font-weight:400;font-size:11px;letter-spacing:.34em;text-transform:uppercase;color:rgba(255,253,248,.9);">Woman as an Element</div>
+        <p style="font-family:'Bodoni Moda',serif;font-style:italic;font-weight:400;font-size:clamp(18px,2vw,26px);line-height:1.25;color:#FFFDF8;margin:18px 0 26px;letter-spacing:.01em;text-shadow:0 2px 30px rgba(16,23,26,.4);">The first story begins with water.</p>
+        <div style="display:flex;gap:13px;flex-wrap:wrap;">
+          <a href="#story" style="display:inline-flex;align-items:center;justify-content:center;padding:16px 34px;border-radius:999px;background:#FFFDF8;color:#10171a;font-family:'Jost';font-weight:400;font-size:11px;letter-spacing:.26em;text-transform:uppercase;text-decoration:none;padding-left:calc(34px + .26em);transition:background .5s ease,color .5s ease;" style-hover="background:#6EA8B0;color:#FFFDF8;">Enter the world</a>
+          <a href="#preview" style="display:inline-flex;align-items:center;justify-content:center;padding:16px 32px;border-radius:999px;border:1px solid rgba(255,253,248,.5);color:#FFFDF8;font-family:'Jost';font-weight:400;font-size:11px;letter-spacing:.26em;text-transform:uppercase;text-decoration:none;padding-left:calc(32px + .26em);transition:background .5s ease,border-color .5s ease;" style-hover="background:rgba(255,253,248,.14);border-color:#FFFDF8;">Discover the first drop</a>
+        </div>
+      </div>
+      <div style="font-family:'Jost';font-weight:400;font-size:11px;letter-spacing:.32em;text-transform:uppercase;color:rgba(255,253,248,.85);text-align:right;">(01) — Liquid femininity</div>
+    </div>
+  </header>
+
+  <!-- ============ STORY — editorial concept, oversized type + layered imagery ============ -->
+  <section id="story" style="background:#FFFDF8;padding:clamp(96px,13vw,184px) clamp(20px,5vw,96px) clamp(70px,9vw,130px);">
+    <div style="max-width:1340px;margin:0 auto;">
+      <div data-reveal style="font-family:'Jost';font-weight:400;font-size:11px;letter-spacing:.36em;text-transform:uppercase;color:#6F6A61;margin-bottom:clamp(20px,2vw,30px);">The Idea — 01</div>
+      <h2 data-reveal style="font-family:'Bodoni Moda',serif;font-weight:500;font-size:clamp(44px,9.5vw,168px);line-height:.92;letter-spacing:-.005em;margin:0;color:#1F1E1B;text-wrap:balance;">Woman as an<br><span style="font-style:italic;font-weight:400;color:#6EA8B0;">Element</span></h2>
+
+      <div data-story-grid style="display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(40px,6vw,110px);align-items:center;margin-top:clamp(56px,7vw,104px);">
+        <div>
+          <p data-reveal style="font-family:'Bodoni Moda',serif;font-style:italic;font-weight:400;font-size:clamp(15px,1.4vw,19px);color:#a9a394;margin:0 0 24px;letter-spacing:.02em;">Девушка как стихия</p>
+          <p data-reveal style="font-family:'Bodoni Moda',serif;font-weight:400;font-size:clamp(22px,2.4vw,34px);line-height:1.32;color:#1F1E1B;margin:0;letter-spacing:.004em;text-wrap:balance;">MILAURE is built around the idea of a woman as an element.</p>
+          <div data-reveal-line style="width:100%;height:1px;background:rgba(31,30,27,.12);margin:38px 0;"></div>
+          <p data-reveal style="font-family:'Jost';font-weight:300;font-size:clamp(15px,1.05vw,17px);line-height:2;color:#6F6A61;letter-spacing:.012em;max-width:470px;margin:0;">She can be fluid like water, bright like fire, free like air, and grounded like earth.</p>
+          <p data-reveal style="font-family:'Jost';font-weight:300;font-size:clamp(15px,1.05vw,17px);line-height:2;color:#6F6A61;letter-spacing:.012em;max-width:470px;margin:22px 0 0;">Each collection tells a different story of femininity — a different mood, rhythm, and energy.</p>
+        </div>
+        <div data-reveal style="position:relative;">
+          <!-- assets/boat.jpg : brand manifesto / campaign lifestyle -->
+          <div style="position:relative;overflow:hidden;border-radius:clamp(12px,1.4vw,18px);aspect-ratio:4/5;background:#EAF7F7;">
+            <img data-parallax="0.05" src="assets/boat.jpg" alt="MILAURE campaign" style="width:100%;height:100%;object-fit:cover;">
+          </div>
+          <!-- assets/shell-legs.jpg : small overlapping detail -->
+          <div data-story-detail style="position:absolute;right:-22px;bottom:-40px;width:42%;overflow:hidden;border-radius:10px;aspect-ratio:3/4;background:#EAD2C4;border:5px solid #FFFDF8;box-shadow:0 26px 54px -30px rgba(31,30,27,.4);">
+            <img src="assets/shell-legs.jpg" alt="MILAURE detail" style="width:100%;height:100%;object-fit:cover;">
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ THE ELEMENTS — fashion category rows ============ -->
+  <section id="collections" style="background:#FBF8F1;padding:clamp(96px,13vw,184px) clamp(20px,5vw,96px);">
+    <div style="max-width:1340px;margin:0 auto;">
+      <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-bottom:clamp(40px,5vw,68px);">
+        <div data-reveal style="font-family:'Jost';font-weight:400;font-size:11px;letter-spacing:.36em;text-transform:uppercase;color:#6F6A61;">The Four Elements — 02</div>
+        <div data-reveal style="font-family:'Jost';font-weight:300;font-size:13px;letter-spacing:.04em;color:#a9a394;">Choose your element</div>
+      </div>
+
+      <div style="border-bottom:1px solid rgba(31,30,27,.12);">
+
+        <a data-el-row href="#water" style="display:flex;align-items:center;gap:clamp(16px,4vw,60px);padding:clamp(22px,3vw,42px) clamp(10px,2vw,28px);border-top:1px solid rgba(31,30,27,.12);text-decoration:none;color:inherit;background:#EAF7F7;transition:background .55s ease,padding-left .55s ease;" style-hover="background:#CFEFF2;padding-left:clamp(20px,3vw,46px);">
+          <span style="font-family:'Jost';font-weight:400;font-size:12px;letter-spacing:.2em;color:#6EA8B0;width:30px;flex:none;">01</span>
+          <span style="font-family:'Bodoni Moda',serif;font-weight:500;font-size:clamp(40px,7.5vw,104px);line-height:.92;letter-spacing:.01em;color:#1F1E1B;flex:1;">Water</span>
+          <span data-el-desc style="flex:0 1 320px;min-width:0;">
+            <span style="display:block;font-family:'Jost';font-weight:400;font-size:10px;letter-spacing:.26em;text-transform:uppercase;color:#6EA8B0;margin-bottom:8px;">Freedom · Softness · Intuition</span>
+            <span style="display:block;font-family:'Jost';font-weight:300;font-size:14px;line-height:1.6;color:#54635f;">For the girl who moves through life in her own rhythm.</span>
+          </span>
+          <span style="display:inline-flex;align-items:center;gap:10px;flex:none;font-family:'Jost';font-weight:400;font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:#6EA8B0;">First Story <span style="font-size:18px;line-height:1;">→</span></span>
+        </a>
+
+        <a data-el-row href="#launch" style="display:flex;align-items:center;gap:clamp(16px,4vw,60px);padding:clamp(22px,3vw,42px) clamp(10px,2vw,28px);border-top:1px solid rgba(31,30,27,.12);text-decoration:none;color:inherit;transition:background .55s ease,padding-left .55s ease;" style-hover="background:#F7EDDF;padding-left:clamp(20px,3vw,46px);">
+          <span style="font-family:'Jost';font-weight:400;font-size:12px;letter-spacing:.2em;color:rgba(31,30,27,.4);width:30px;flex:none;">02</span>
+          <span style="font-family:'Bodoni Moda',serif;font-weight:500;font-size:clamp(40px,7.5vw,104px);line-height:.92;letter-spacing:.01em;color:#1F1E1B;flex:1;">Fire</span>
+          <span data-el-desc style="flex:0 1 320px;min-width:0;">
+            <span style="display:block;font-family:'Jost';font-weight:400;font-size:10px;letter-spacing:.26em;text-transform:uppercase;color:#B5876A;margin-bottom:8px;">Passion · Visibility · Desire</span>
+            <span style="display:block;font-family:'Jost';font-weight:300;font-size:14px;line-height:1.6;color:#6F6A61;">For the girl who is not afraid to be seen.</span>
+          </span>
+          <span style="display:inline-flex;align-items:center;flex:none;font-family:'Jost';font-weight:400;font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:rgba(31,30,27,.4);">Coming</span>
+        </a>
+
+        <a data-el-row href="#launch" style="display:flex;align-items:center;gap:clamp(16px,4vw,60px);padding:clamp(22px,3vw,42px) clamp(10px,2vw,28px);border-top:1px solid rgba(31,30,27,.12);text-decoration:none;color:inherit;transition:background .55s ease,padding-left .55s ease;" style-hover="background:#F1F2F0;padding-left:clamp(20px,3vw,46px);">
+          <span style="font-family:'Jost';font-weight:400;font-size:12px;letter-spacing:.2em;color:rgba(31,30,27,.4);width:30px;flex:none;">03</span>
+          <span style="font-family:'Bodoni Moda',serif;font-weight:500;font-size:clamp(40px,7.5vw,104px);line-height:.92;letter-spacing:.01em;color:#1F1E1B;flex:1;">Air</span>
+          <span data-el-desc style="flex:0 1 320px;min-width:0;">
+            <span style="display:block;font-family:'Jost';font-weight:400;font-size:10px;letter-spacing:.26em;text-transform:uppercase;color:#8A8F8A;margin-bottom:8px;">Lightness · Choice · Freedom</span>
+            <span style="display:block;font-family:'Jost';font-weight:300;font-size:14px;line-height:1.6;color:#6F6A61;">For the girl who lives by her own rules.</span>
+          </span>
+          <span style="display:inline-flex;align-items:center;flex:none;font-family:'Jost';font-weight:400;font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:rgba(31,30,27,.4);">Coming</span>
+        </a>
+
+        <a data-el-row href="#launch" style="display:flex;align-items:center;gap:clamp(16px,4vw,60px);padding:clamp(22px,3vw,42px) clamp(10px,2vw,28px);border-top:1px solid rgba(31,30,27,.12);text-decoration:none;color:inherit;transition:background .55s ease,padding-left .55s ease;" style-hover="background:#F2E9D9;padding-left:clamp(20px,3vw,46px);">
+          <span style="font-family:'Jost';font-weight:400;font-size:12px;letter-spacing:.2em;color:rgba(31,30,27,.4);width:30px;flex:none;">04</span>
+          <span style="font-family:'Bodoni Moda',serif;font-weight:500;font-size:clamp(40px,7.5vw,104px);line-height:.92;letter-spacing:.01em;color:#1F1E1B;flex:1;">Earth</span>
+          <span data-el-desc style="flex:0 1 320px;min-width:0;">
+            <span style="display:block;font-family:'Jost';font-weight:400;font-size:10px;letter-spacing:.26em;text-transform:uppercase;color:#9C8763;margin-bottom:8px;">Confidence · Grounding · Worth</span>
+            <span style="display:block;font-family:'Jost';font-weight:300;font-size:14px;line-height:1.6;color:#6F6A61;">For the girl who knows her value.</span>
+          </span>
+          <span style="display:inline-flex;align-items:center;flex:none;font-family:'Jost';font-weight:400;font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:rgba(31,30,27,.4);">Coming</span>
+        </a>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ I AM WATER — emotional heart ============ -->
+  <section id="water" style="background:linear-gradient(180deg,#FFFDF8 0%,#EAF7F7 100%);padding:clamp(96px,13vw,184px) clamp(20px,5vw,96px);overflow:hidden;">
+    <div style="max-width:1340px;margin:0 auto;">
+
+      <div data-water-grid style="display:grid;grid-template-columns:1fr 1fr;gap:clamp(36px,5vw,90px);align-items:end;">
+        <div style="position:relative;">
+          <div data-reveal style="font-family:'Jost';font-weight:400;font-size:11px;letter-spacing:.36em;text-transform:uppercase;color:#6EA8B0;margin-bottom:clamp(18px,2vw,28px);">The First MILAURE Collection — 03</div>
+          <h2 data-reveal style="font-family:'Bodoni Moda',serif;font-weight:500;font-size:clamp(56px,12vw,180px);line-height:.84;letter-spacing:.005em;color:#1F1E1B;margin:0;">I AM<br>WATER</h2>
+          <p data-reveal style="font-family:'Bodoni Moda',serif;font-style:italic;font-weight:400;font-size:clamp(18px,2vw,26px);color:#6EA8B0;margin:30px 0 0;letter-spacing:.01em;">A collection about freedom.</p>
+        </div>
+        <div data-reveal style="position:relative;">
+          <!-- assets/satin-sand.jpg : I AM WATER campaign image -->
+          <div style="position:relative;overflow:hidden;border-radius:clamp(12px,1.4vw,18px);aspect-ratio:4/5;background:#DCF0F0;">
+            <img data-parallax="0.06" src="assets/satin-sand.jpg" alt="I am Water" style="width:100%;height:100%;object-fit:cover;">
+          </div>
+          <!-- assets/sequin-boat.jpg : floating water detail -->
+          <div data-water-float style="position:absolute;left:-26px;top:-34px;width:38%;overflow:hidden;border-radius:10px;aspect-ratio:1/1;background:#CFEFF2;border:5px solid #EAF7F7;box-shadow:0 24px 50px -28px rgba(31,30,27,.35);">
+            <img src="assets/sequin-boat.jpg" alt="MILAURE detail" style="width:100%;height:100%;object-fit:cover;">
+          </div>
+        </div>
+      </div>
+
+      <!-- big emotional statement -->
+      <div style="text-align:center;margin:clamp(78px,11vw,150px) auto clamp(20px,4vw,50px);max-width:980px;">
+        <p data-reveal style="font-family:'Jost';font-weight:300;font-size:clamp(13px,1.1vw,15px);letter-spacing:.18em;text-transform:uppercase;color:#7c9a9c;margin:0;">For the girl who moves through life in her own rhythm</p>
+        <div data-reveal style="font-family:'Bodoni Moda',serif;font-style:italic;font-weight:400;font-size:clamp(50px,11vw,160px);line-height:.98;letter-spacing:.005em;color:#6EA8B0;margin:24px 0 0;text-wrap:balance;">She does not rush.<br>She flows.</div>
+      </div>
+
+      <div style="max-width:560px;margin:0 auto;text-align:center;">
+        <p data-reveal style="font-family:'Jost';font-weight:300;font-size:clamp(15px,1.05vw,17px);line-height:2;color:#5a6b69;letter-spacing:.012em;margin:0;">Soft silhouettes, fluid fabrics and pieces made to move with the body.</p>
+        <p data-reveal style="font-family:'Bodoni Moda',serif;font-style:italic;font-size:clamp(18px,1.7vw,23px);color:#1F1E1B;margin:30px 0 0;letter-spacing:.02em;">Made to flow with you.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ MARQUEE (scroll-driven) ============ -->
+  <div style="background:#CFEFF2;overflow:hidden;padding:clamp(16px,1.8vw,26px) 0;">
+    <div data-marquee style="display:flex;width:max-content;white-space:nowrap;will-change:transform;">
+      <span style="font-family:'Jost';font-weight:400;font-size:clamp(18px,2.4vw,34px);letter-spacing:.18em;text-transform:uppercase;color:#1F1E1B;">MILAURE&nbsp;&nbsp;/&nbsp;&nbsp;<span style="font-family:'Bodoni Moda',serif;font-style:italic;text-transform:none;letter-spacing:.02em;">I am Water</span>&nbsp;&nbsp;/&nbsp;&nbsp;Liquid Femininity&nbsp;&nbsp;/&nbsp;&nbsp;<span style="font-family:'Bodoni Moda',serif;font-style:italic;text-transform:none;letter-spacing:.02em;">Made to flow with you</span>&nbsp;&nbsp;/&nbsp;&nbsp;</span>
+      <span style="font-family:'Jost';font-weight:400;font-size:clamp(18px,2.4vw,34px);letter-spacing:.18em;text-transform:uppercase;color:#1F1E1B;">MILAURE&nbsp;&nbsp;/&nbsp;&nbsp;<span style="font-family:'Bodoni Moda',serif;font-style:italic;text-transform:none;letter-spacing:.02em;">I am Water</span>&nbsp;&nbsp;/&nbsp;&nbsp;Liquid Femininity&nbsp;&nbsp;/&nbsp;&nbsp;<span style="font-family:'Bodoni Moda',serif;font-style:italic;text-transform:none;letter-spacing:.02em;">Made to flow with you</span>&nbsp;&nbsp;/&nbsp;&nbsp;</span>
+    </div>
+  </div>
+
+  <!-- ============ CAMPAIGN COLLAGE — layered moodboard ============ -->
+  <section id="campaign" style="background:#FFFDF8;padding:clamp(96px,13vw,184px) clamp(20px,5vw,96px);">
+    <div style="max-width:1280px;margin:0 auto;position:relative;">
+      <div data-reveal style="font-family:'Jost';font-weight:400;font-size:11px;letter-spacing:.36em;text-transform:uppercase;color:#6F6A61;text-align:center;margin-bottom:clamp(8px,1vw,16px);">The Campaign — 04</div>
+      <h3 data-reveal style="font-family:'Bodoni Moda',serif;font-style:italic;font-weight:400;font-size:clamp(34px,6vw,86px);line-height:1;letter-spacing:.005em;color:#1F1E1B;text-align:center;margin:0 0 clamp(48px,6vw,80px);">Liquid femininity</h3>
+
+      <div data-collage style="display:flex;gap:clamp(20px,4vw,64px);align-items:flex-start;justify-content:center;flex-wrap:wrap;">
+        <!-- assets/car.jpg : campaign collage -->
+        <div data-collage-col data-reveal style="flex:1 1 300px;max-width:380px;">
+          <div style="position:relative;overflow:hidden;border-radius:12px;aspect-ratio:3/4;background:#EADFce;">
+            <img data-parallax="0.04" src="assets/car.jpg" alt="MILAURE campaign" style="width:100%;height:100%;object-fit:cover;">
+          </div>
+          <div style="font-family:'Jost';font-weight:400;font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:#a9a394;margin-top:14px;">I · On the water</div>
+        </div>
+        <!-- assets/sequin-boat.jpg : campaign collage, offset -->
+        <div data-collage-col data-reveal style="flex:1 1 280px;max-width:340px;margin-top:clamp(48px,9vw,132px);">
+          <div style="position:relative;overflow:hidden;border-radius:12px;aspect-ratio:4/5;background:#E6F2F1;">
+            <img data-parallax="0.07" src="assets/sequin-boat.jpg" alt="MILAURE campaign" style="width:100%;height:100%;object-fit:cover;">
+          </div>
+          <div style="font-family:'Jost';font-weight:400;font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:#a9a394;margin-top:14px;">II · Liquid light</div>
+        </div>
+        <!-- assets/sea-knit.jpg + overlap assets/shell-legs.jpg : campaign collage -->
+        <div data-collage-col data-reveal style="flex:1 1 260px;max-width:320px;margin-top:clamp(20px,4vw,56px);">
+          <div style="position:relative;">
+            <div style="position:relative;overflow:hidden;border-radius:12px;aspect-ratio:4/5;background:#E6F2F1;">
+              <img data-parallax="0.05" src="assets/sea-knit.jpg" alt="MILAURE campaign" style="width:100%;height:100%;object-fit:cover;">
+            </div>
+            <div data-collage-overlap style="position:absolute;right:-22px;bottom:-46px;width:56%;overflow:hidden;border-radius:10px;aspect-ratio:3/4;background:#EBE0d0;border:5px solid #FFFDF8;box-shadow:0 24px 50px -28px rgba(31,30,27,.35);">
+              <img src="assets/shell-legs.jpg" alt="MILAURE campaign" style="width:100%;height:100%;object-fit:cover;">
+            </div>
+          </div>
+          <div style="font-family:'Jost';font-weight:400;font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:#a9a394;margin-top:62px;">III · Sea air · shell</div>
+        </div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;align-items:center;margin-top:clamp(72px,9vw,120px);">
+        <div data-reveal-yline style="width:1px;height:clamp(48px,6vw,76px);background:rgba(31,30,27,.2);"></div>
+        <p data-reveal style="font-family:'Bodoni Moda',serif;font-style:italic;font-size:clamp(17px,1.7vw,23px);letter-spacing:.01em;color:#8a857a;margin:28px 0 0;text-align:center;">The first story begins with water.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FIRST DROP PREVIEW — soft product cards (placeholders) ============ -->
+  <section id="preview" style="background:#FBF8F1;padding:clamp(96px,13vw,184px) clamp(20px,5vw,96px);">
+    <div style="max-width:1280px;margin:0 auto;">
+      <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-bottom:clamp(40px,5vw,66px);">
+        <div>
+          <div data-reveal style="font-family:'Jost';font-weight:400;font-size:11px;letter-spacing:.36em;text-transform:uppercase;color:#6F6A61;">First Drop Preview — 05</div>
+          <h2 data-reveal style="font-family:'Bodoni Moda',serif;font-weight:500;font-size:clamp(32px,5vw,72px);line-height:.98;letter-spacing:.01em;margin:18px 0 0;color:#1F1E1B;">The I AM WATER edit</h2>
+        </div>
+        <a data-reveal href="#launch" style="font-family:'Jost';font-weight:400;font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:#6EA8B0;text-decoration:none;display:inline-flex;align-items:center;gap:8px;">Notify me <span style="font-size:16px;">→</span></a>
+      </div>
+
+      <!-- Product visuals below are campaign-image placeholders — swap for product cutouts on shoot -->
+      <div data-preview style="display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(16px,2vw,30px);">
+
+        <div data-reveal style="display:flex;flex-direction:column;">
+          <div style="position:relative;overflow:hidden;border-radius:14px;aspect-ratio:3/4;background:#EAF7F7;">
+            <!-- assets/dress-water.jpg : WATER MAXI -->
+            <img src="assets/dress-water.jpg" alt="Water Maxi" style="width:100%;height:100%;object-fit:cover;transition:transform 1s cubic-bezier(.16,1,.3,1);" style-hover="transform:scale(1.04);">
+            <div style="position:absolute;top:14px;left:14px;display:inline-flex;padding:6px 12px;border-radius:999px;background:#F7DDE6;font-family:'Jost';font-weight:400;font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:#1F1E1B;padding-left:calc(12px + .22em);">Soon</div>
+          </div>
+          <div style="display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-top:16px;">
+            <span style="font-family:'Bodoni Moda',serif;font-weight:500;font-size:clamp(17px,1.4vw,21px);letter-spacing:.04em;color:#1F1E1B;">WATER MAXI</span>
+            <span style="font-family:'Jost';font-weight:400;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:#a9a394;">01</span>
+          </div>
+        </div>
+
+        <div data-reveal style="display:flex;flex-direction:column;">
+          <div style="position:relative;overflow:hidden;border-radius:14px;aspect-ratio:3/4;background:#EAF7F7;">
+            <!-- assets/sea-knit.jpg : WATER MINI SET -->
+            <img src="assets/sea-knit.jpg" alt="Water Mini Set" style="width:100%;height:100%;object-fit:cover;transition:transform 1s cubic-bezier(.16,1,.3,1);" style-hover="transform:scale(1.04);">
+            <div style="position:absolute;top:14px;left:14px;display:inline-flex;padding:6px 12px;border-radius:999px;background:#F7DDE6;font-family:'Jost';font-weight:400;font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:#1F1E1B;padding-left:calc(12px + .22em);">Soon</div>
+          </div>
+          <div style="display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-top:16px;">
+            <span style="font-family:'Bodoni Moda',serif;font-weight:500;font-size:clamp(17px,1.4vw,21px);letter-spacing:.04em;color:#1F1E1B;">WATER MINI SET</span>
+            <span style="font-family:'Jost';font-weight:400;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:#a9a394;">02</span>
+          </div>
+        </div>
+
+        <div data-reveal style="display:flex;flex-direction:column;">
+          <div style="position:relative;overflow:hidden;border-radius:14px;aspect-ratio:3/4;background:#EAF7F7;">
+            <!-- assets/satin-sand.jpg : WATER LONG SLEEVE -->
+            <img src="assets/satin-sand.jpg" alt="Water Long Sleeve" style="width:100%;height:100%;object-fit:cover;transition:transform 1s cubic-bezier(.16,1,.3,1);" style-hover="transform:scale(1.04);">
+            <div style="position:absolute;top:14px;left:14px;display:inline-flex;padding:6px 12px;border-radius:999px;background:#F7DDE6;font-family:'Jost';font-weight:400;font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:#1F1E1B;padding-left:calc(12px + .22em);">Soon</div>
+          </div>
+          <div style="display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-top:16px;">
+            <span style="font-family:'Bodoni Moda',serif;font-weight:500;font-size:clamp(17px,1.4vw,21px);letter-spacing:.04em;color:#1F1E1B;">WATER LONG SLEEVE</span>
+            <span style="font-family:'Jost';font-weight:400;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:#a9a394;">03</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ LAUNCH ============ -->
+  <section id="launch" style="background:#FFFDF8;padding:clamp(104px,14vw,196px) clamp(20px,5vw,96px);">
+    <div style="max-width:1100px;margin:0 auto;background:linear-gradient(160deg,#EAF7F7 0%,#CFEFF2 100%);border-radius:clamp(16px,2vw,26px);padding:clamp(48px,7vw,104px) clamp(28px,5vw,80px);text-align:center;">
+      <div data-reveal style="font-family:'Jost';font-weight:400;font-size:11px;letter-spacing:.36em;text-transform:uppercase;color:#6EA8B0;">The Launch — 06</div>
+      <h2 data-reveal style="font-family:'Bodoni Moda',serif;font-weight:500;font-size:clamp(32px,5.2vw,76px);line-height:1.04;letter-spacing:.005em;color:#1F1E1B;margin:20px 0 0;text-wrap:balance;">The first MILAURE drop is coming soon.</h2>
+      <p data-reveal style="font-family:'Jost';font-weight:300;font-size:clamp(15px,1.1vw,17px);line-height:1.85;color:#52605f;letter-spacing:.014em;margin:24px auto 0;max-width:480px;">Enter the world of MILAURE and be the first to discover the launch.</p>
+
+      <div data-reveal style="margin-top:clamp(38px,5vw,54px);">
+        <sc-if value="{{ notNotified }}" hint-placeholder-val="{{ true }}">
+          <form onSubmit="{{ onSubmit }}" style="display:flex;align-items:stretch;gap:10px;max-width:500px;margin:0 auto;flex-wrap:wrap;justify-content:center;background:rgba(255,253,248,.7);border-radius:999px;padding:7px;">
+            <input type="email" required="{{ true }}" value="{{ email }}" onChange="{{ onEmail }}" placeholder="Your email" style="flex:1 1 220px;min-width:180px;background:transparent;border:none;padding:14px 22px;font-family:'Jost';font-weight:300;font-size:15px;letter-spacing:.03em;color:#1F1E1B;outline:none;" style-focus="outline:none;"/>
+            <button type="submit" style="display:inline-flex;align-items:center;justify-content:center;padding:15px 34px;border-radius:999px;background:#1F1E1B;color:#FFFDF8;border:none;font-family:'Jost';font-weight:400;font-size:11px;letter-spacing:.26em;text-transform:uppercase;cursor:pointer;padding-left:calc(34px + .26em);transition:background .5s ease;" style-hover="background:#6EA8B0;">Notify me</button>
+          </form>
+        </sc-if>
+        <sc-if value="{{ notified }}" hint-placeholder-val="{{ false }}">
+          <div style="max-width:500px;margin:0 auto;padding:20px 28px;border-radius:999px;background:rgba(255,253,248,.75);">
+            <p style="font-family:'Bodoni Moda',serif;font-style:italic;font-size:20px;color:#1F1E1B;margin:0;">Thank you — you'll be the first to know.</p>
+          </div>
+        </sc-if>
+        <a href="#footer" style="display:inline-flex;align-items:center;margin-top:26px;color:#1F1E1B;font-family:'Jost';font-weight:400;font-size:11px;letter-spacing:.24em;text-transform:uppercase;text-decoration:none;opacity:.7;border-bottom:1px solid rgba(31,30,27,.3);padding-bottom:3px;transition:opacity .4s ease;" style-hover="opacity:1;">Follow on Instagram</a>
+      </div>
+    </div>
+  </section>
+
+  <footer id="footer" style="background:#1F1E1B;color:#EDE7DC;padding:clamp(72px,9vw,116px) clamp(24px,6vw,96px) 48px;text-align:center;">
+    <div style="font-family:'Bodoni Moda',serif;font-weight:500;font-size:clamp(40px,8vw,120px);letter-spacing:.18em;padding-left:.18em;color:#FFFDF8;line-height:1;">MILAURE</div>
+    <div style="display:flex;align-items:center;justify-content:center;gap:16px;margin-top:28px;flex-wrap:wrap;">
+      <span style="width:30px;height:1px;background:rgba(237,231,220,.3);display:block;"></span>
+      <span style="font-family:'Jost';font-weight:300;font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:rgba(237,231,220,.7);padding-left:.3em;">Woman as an Element</span>
+      <span style="width:30px;height:1px;background:rgba(237,231,220,.3);display:block;"></span>
+    </div>
+    <p style="font-family:'Bodoni Moda',serif;font-style:italic;font-size:16px;color:rgba(237,231,220,.6);margin:18px 0 0;letter-spacing:.02em;">Made to flow with you</p>
+    <div style="display:flex;gap:34px;justify-content:center;flex-wrap:wrap;margin-top:clamp(44px,5vw,64px);">
+      <a href="#footer" style="font-family:'Jost';font-weight:400;font-size:11px;letter-spacing:.26em;text-transform:uppercase;color:rgba(237,231,220,.78);text-decoration:none;transition:color .4s ease;" style-hover="color:#FFFDF8;">Instagram</a>
+      <a href="#footer" style="font-family:'Jost';font-weight:400;font-size:11px;letter-spacing:.26em;text-transform:uppercase;color:rgba(237,231,220,.78);text-decoration:none;transition:color .4s ease;" style-hover="color:#FFFDF8;">Contact</a>
+      <a href="#footer" style="font-family:'Jost';font-weight:400;font-size:11px;letter-spacing:.26em;text-transform:uppercase;color:rgba(237,231,220,.78);text-decoration:none;transition:color .4s ease;" style-hover="color:#FFFDF8;">Privacy</a>
+    </div>
+    <div style="font-family:'Jost';font-weight:300;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:rgba(237,231,220,.35);margin-top:48px;">© {{ year }} MILAURE — I Am Water</div>
+  </footer>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { notified: false, email: "" };
+
+  componentDidMount() {
+    const start = () => {
+      const v = document.querySelector("[data-hero-video]");
+      if (!v) return;
+      v.muted = true; v.loop = true; v.autoplay = true; v.playsInline = true;
+      v.setAttribute("playsinline", "");
+      const p = v.play();
+      if (p && p.catch) p.catch(() => {});
+    };
+    start();
+    setTimeout(start, 400);
+
+    const onScroll = () => {
+      const se = document.scrollingElement || document.documentElement;
+      const y = (window.scrollY || 0) || (se ? se.scrollTop : 0);
+      document.documentElement.toggleAttribute("data-nav-scrolled", y > 40);
+    };
+    window.addEventListener("scroll", onScroll, true);
+    onScroll();
+    this._onScroll = onScroll;
+  }
+
+  componentWillUnmount() {
+    if (this._onScroll) window.removeEventListener("scroll", this._onScroll, true);
+  }
+
+  renderVals() {
+    return {
+      notified: this.state.notified,
+      notNotified: !this.state.notified,
+      email: this.state.email,
+      onEmail: (e) => this.setState({ email: e.target.value }),
+      onSubmit: (e) => {
+        e.preventDefault();
+        if ((this.state.email || "").includes("@")) this.setState({ notified: true });
+      },
+      year: new Date().getFullYear(),
+    };
+  }
+}
+</script>
+</body>
+</html>
