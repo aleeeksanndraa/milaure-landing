@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;1,6..96,400&amp;display=swap" rel="stylesheet">
+<link rel="icon" type="image/png" href="assets/favicon.png">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<style>
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  :root{
+    --bg:#E6EBEF; --surface:#FAFCFD; --ink:#284655; --muted:#7B97A6; --faint:#A9C2D1;
+    --line:rgba(40,71,90,.13); --accent:#5E97B5;
+    --dark:#2A4756; --dark-ink:#E7EFF2; --dark-muted:#9DB4C0; --dark-line:rgba(231,239,242,.18);
+    --ph1:#D6E2EA; --ph2:#C4D8E3;
+  }
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased;}
+  a{color:inherit;text-decoration:none;}
+  p{line-height:1.2!important;letter-spacing:-0.5px!important;}
+  ::selection{background:var(--accent);color:#fff;}
+  @keyframes revealIn{from{opacity:0;transform:translateY(36px);}to{opacity:1;transform:none;}}
+  @keyframes parDrift{from{transform:translateY(-6%);}to{transform:translateY(6%);}}
+  [data-reveal]{animation:revealIn 1.2s cubic-bezier(.16,1,.3,1) both;animation-timeline:view();animation-range:entry 2% cover 30%;}
+  [data-parallax]{animation:parDrift linear both;animation-timeline:view();animation-range:cover 0% cover 100%;}
+  [data-link]{position:relative;}
+  [data-link]::after{content:"";position:absolute;left:0;right:100%;bottom:-3px;height:1px;background:currentColor;transition:right .4s cubic-bezier(.16,1,.3,1);}
+  [data-link]:hover::after{right:0;}
+  @media (prefers-reduced-motion:reduce){[data-reveal],[data-parallax]{animation:none;opacity:1;transform:none;}}
+  @media (max-width:920px){
+    [data-nav-links]{display:none!important;}
+    [data-nav-utils]{gap:16px!important;}
+    [data-elsec]{grid-template-columns:1fr!important;gap:26px!important;}
+    [data-elsec-panel]{aspect-ratio:16/10!important;}
+    [data-foot-links]{gap:18px!important;}
+  }
+</style>
+</helmet>
+
+<div style="position:relative;width:100%;overflow-x:hidden;">
+
+  <!-- NAV -->
+  <nav style="position:sticky;top:0;z-index:60;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding:20px clamp(20px,3.4vw,52px);background:var(--surface);border-bottom:1px solid var(--line);">
+    <div data-nav-links="" style="display:flex;gap:clamp(20px,2.2vw,40px);font-size:14px;">
+      <a data-link="" href="About.dc.html">About</a>
+      <a data-link="" href="Elements.dc.html" style="opacity:.55;">Elements</a>
+    </div>
+    <a href="index.html" style="justify-self:center;font-family:'Bodoni Moda',serif;font-size:clamp(20px,1.9vw,27px);letter-spacing:.34em;padding-left:.34em;font-weight:500;">MILAURE</a>
+    <div data-nav-utils="" style="justify-self:end;display:flex;gap:clamp(18px,2vw,32px);font-size:14px;align-items:center;">
+      <a data-link="" href="#">Instagram</a>
+      <a data-link="" href="index.html#notify">Contact</a>
+      <a href="index.html#notify" style="border:1px solid currentColor;border-radius:0;padding:8px 18px;font-size:13px;letter-spacing:.04em;">Notify Me</a>
+    </div>
+  </nav>
+
+  <!-- PAGE HEADER -->
+  <header style="padding:clamp(54px,8vw,120px) clamp(20px,3.4vw,52px) clamp(34px,4vw,60px);max-width:1640px;">
+    <div style="font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin-bottom:22px;">Woman as Elements</div>
+    <h1 style="margin:0;font-family:'Bodoni Moda',serif;font-weight:400;font-size:clamp(52px,9vw,150px);line-height:.92;letter-spacing:.01em;color:var(--ink);">The Elements</h1>
+    <p style="margin:26px 0 0;max-width:54ch;font-size:16px;line-height:1.45;color:var(--ink);">Four elements, four feminine energies — each one a different collection inside the MILAURE universe. Water is the first story. The others open in future editions.</p>
+  </header>
+
+  <!-- WATER -->
+  <section style="background:var(--surface);border-top:1px solid var(--line);padding:clamp(44px,6vw,96px) clamp(20px,3.4vw,52px);">
+    <div data-elsec="" style="max-width:1640px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:clamp(34px,5vw,90px);align-items:center;">
+      <div data-reveal="">
+        <div style="font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-bottom:16px;">Element 01 — First drop</div>
+        <h2 style="margin:0 0 14px;font-family:'Bodoni Moda',serif;font-weight:400;font-size:clamp(48px,7vw,108px);line-height:.9;color:var(--ink);">Water</h2>
+        <div style="font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:22px;">Softness, movement, intuition.</div>
+        <p style="margin:0 0 14px;font-size:16px;line-height:1.4;color:var(--ink);max-width:46ch;">The first story begins with water. A collection about softness, movement and freedom — for the woman who moves through life in her own rhythm.</p>
+        <p style="margin:0 0 28px;font-family:'Bodoni Moda',serif;font-style:italic;font-size:18px;line-height:1.25;color:var(--ink);">She does not rush. She flows.</p>
+        <a data-link="" href="index.html#glimpse" style="font-size:14px;font-weight:500;">See the first glimpse</a>
+      </div>
+      <div data-elsec-panel="" data-reveal="" style="position:relative;overflow:hidden;aspect-ratio:4/5;background:linear-gradient(160deg,#CFE6EC 0%,#9FC0CF 50%,#6E94AB 100%);">
+        <div style="position:absolute;inset:0;background:radial-gradient(120% 80% at 30% 18%,rgba(255,255,255,.32),transparent 60%);"></div>
+        <div style="position:absolute;left:0;right:0;bottom:0;padding:clamp(20px,2vw,32px);color:#1C2A32;">
+          <div style="font-family:'Bodoni Moda',serif;font-size:clamp(22px,2.4vw,34px);line-height:1;">Water, satin, skin, sea.</div>
+          <div style="font-size:11px;letter-spacing:.12em;text-transform:uppercase;margin-top:8px;opacity:.72;">First Edition · 2026</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FIRE -->
+  <section style="background:var(--bg);border-top:1px solid var(--line);padding:clamp(44px,6vw,96px) clamp(20px,3.4vw,52px);">
+    <div data-elsec="" style="max-width:1640px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:clamp(34px,5vw,90px);align-items:center;">
+      <div data-reveal="">
+        <div style="font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-bottom:16px;">Element 02 — Coming soon</div>
+        <h2 style="margin:0 0 14px;font-family:'Bodoni Moda',serif;font-weight:400;font-size:clamp(48px,7vw,108px);line-height:.9;color:var(--ink);">Fire</h2>
+        <div style="font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:22px;">Confidence, passion, visibility.</div>
+        <p style="margin:0 0 14px;font-size:16px;line-height:1.4;color:var(--ink);max-width:46ch;">A future story about confidence, passion and visibility — for the woman who is not afraid to be seen.</p>
+        <p style="margin:0 0 28px;font-family:'Bodoni Moda',serif;font-style:italic;font-size:18px;line-height:1.25;color:var(--ink);">Coming soon.</p>
+        <a data-link="" href="index.html#notify" style="font-size:14px;font-weight:500;">Be the first to know</a>
+      </div>
+      <div data-elsec-panel="" data-reveal="" style="position:relative;overflow:hidden;aspect-ratio:4/5;background:linear-gradient(160deg,#F6E0C8 0%,#E3A766 50%,#C2702E 100%);">
+        <div style="position:absolute;inset:0;background:radial-gradient(120% 80% at 70% 18%,rgba(255,228,196,.34),transparent 60%);"></div>
+        <div style="position:absolute;left:0;right:0;bottom:0;padding:clamp(20px,2vw,32px);color:#3A2616;">
+          <div style="font-family:'Bodoni Moda',serif;font-size:clamp(22px,2.4vw,34px);line-height:1;">Warm light, skin, champagne.</div>
+          <div style="font-size:11px;letter-spacing:.12em;text-transform:uppercase;margin-top:8px;opacity:.7;">Future Edition</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- AIR -->
+  <section style="background:var(--surface);border-top:1px solid var(--line);padding:clamp(44px,6vw,96px) clamp(20px,3.4vw,52px);">
+    <div data-elsec="" style="max-width:1640px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:clamp(34px,5vw,90px);align-items:center;">
+      <div data-reveal="">
+        <div style="font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-bottom:16px;">Element 03 — Coming soon</div>
+        <h2 style="margin:0 0 14px;font-family:'Bodoni Moda',serif;font-weight:400;font-size:clamp(48px,7vw,108px);line-height:.9;color:var(--ink);">Air</h2>
+        <div style="font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:22px;">Lightness, choice, independence.</div>
+        <p style="margin:0 0 14px;font-size:16px;line-height:1.4;color:var(--ink);max-width:46ch;">A future story about lightness, independence and freedom of choice — for the woman who lives by her own rules.</p>
+        <p style="margin:0 0 28px;font-family:'Bodoni Moda',serif;font-style:italic;font-size:18px;line-height:1.25;color:var(--ink);">Coming soon.</p>
+        <a data-link="" href="index.html#notify" style="font-size:14px;font-weight:500;">Be the first to know</a>
+      </div>
+      <div data-elsec-panel="" data-reveal="" style="position:relative;overflow:hidden;aspect-ratio:4/5;background:linear-gradient(160deg,#FBFCFC 0%,#ECEFF0 52%,#D2D8DB 100%);">
+        <div style="position:absolute;inset:0;background:radial-gradient(120% 80% at 40% 14%,rgba(255,255,255,.5),transparent 62%);"></div>
+        <div style="position:absolute;left:0;right:0;bottom:0;padding:clamp(20px,2vw,32px);color:#2E343A;">
+          <div style="font-family:'Bodoni Moda',serif;font-size:clamp(22px,2.4vw,34px);line-height:1;">Sheer fabric, light, shadow.</div>
+          <div style="font-size:11px;letter-spacing:.12em;text-transform:uppercase;margin-top:8px;opacity:.66;">Future Edition</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EARTH -->
+  <section style="background:var(--bg);border-top:1px solid var(--line);padding:clamp(44px,6vw,96px) clamp(20px,3.4vw,52px);">
+    <div data-elsec="" style="max-width:1640px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:clamp(34px,5vw,90px);align-items:center;">
+      <div data-reveal="">
+        <div style="font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-bottom:16px;">Element 04 — Coming soon</div>
+        <h2 style="margin:0 0 14px;font-family:'Bodoni Moda',serif;font-weight:400;font-size:clamp(48px,7vw,108px);line-height:.9;color:var(--ink);">Earth</h2>
+        <div style="font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:22px;">Grounding, strength, self-worth.</div>
+        <p style="margin:0 0 14px;font-size:16px;line-height:1.4;color:var(--ink);max-width:46ch;">A future story about grounding, strength and self-worth — for the woman who knows her value.</p>
+        <p style="margin:0 0 28px;font-family:'Bodoni Moda',serif;font-style:italic;font-size:18px;line-height:1.25;color:var(--ink);">Coming soon.</p>
+        <a data-link="" href="index.html#notify" style="font-size:14px;font-weight:500;">Be the first to know</a>
+      </div>
+      <div data-elsec-panel="" data-reveal="" style="position:relative;overflow:hidden;aspect-ratio:4/5;background:linear-gradient(160deg,#E2D2BC 0%,#B68C5E 52%,#6F4A33 100%);">
+        <div style="position:absolute;inset:0;background:radial-gradient(120% 80% at 30% 16%,rgba(255,238,210,.3),transparent 60%);"></div>
+        <div style="position:absolute;left:0;right:0;bottom:0;padding:clamp(20px,2vw,32px);color:#F2E7D6;">
+          <div style="font-family:'Bodoni Moda',serif;font-size:clamp(22px,2.4vw,34px);line-height:1;">Sand, stone, body.</div>
+          <div style="font-size:11px;letter-spacing:.12em;text-transform:uppercase;margin-top:8px;opacity:.7;">Future Edition</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer style="background:var(--dark);color:var(--dark-ink);padding:0 clamp(20px,3.4vw,52px) 38px;">
+    <div style="max-width:1820px;margin:0 auto;">
+      <div style="display:flex;justify-content:flex-start;padding:clamp(40px,6vw,90px) 0 clamp(14px,2vw,24px);">
+        <a href="index.html" style="font-family:'Bodoni Moda',serif;font-weight:500;font-size:clamp(56px,17vw,260px);line-height:.86;letter-spacing:.04em;color:var(--dark-ink);">MILAURE</a>
+      </div>
+      <div style="text-align:left;color:var(--dark-muted);margin-bottom:clamp(34px,4vw,56px);">
+        <div style="font-size:12px;letter-spacing:.28em;text-transform:uppercase;margin-bottom:10px;">Woman as Elements</div>
+        <div style="font-family:'Bodoni Moda',serif;font-style:italic;font-size:16px;">Made to flow with you.</div>
+      </div>
+      <div data-foot-links="" style="display:flex;justify-content:flex-start;gap:clamp(22px,4vw,56px);flex-wrap:wrap;font-size:14px;padding:clamp(26px,3vw,40px) 0;border-top:1px solid var(--dark-line);">
+        <a data-link="" href="#">Instagram</a>
+        <a data-link="" href="index.html#notify">Contact</a>
+        <a data-link="" href="About.dc.html">About</a>
+        <a data-link="" href="#">Privacy</a>
+      </div>
+      <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:14px;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--dark-muted);">
+        <span>© 2026 Milaure — Woman as Elements</span>
+        <span>The first story begins with water</span>
+      </div>
+    </div>
+  </footer>
+
+</div>
+</x-dc>
+</body>
+</html>
