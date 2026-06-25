@@ -1,1 +1,10 @@
+# OS / editor
 .DS_Store
+Thumbs.db
+*.swp
+.idea/
+.vscode/
+
+# Dependencies / build (none required, kept for safety)
+node_modules/
+dist/
