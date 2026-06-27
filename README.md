@@ -1,44 +1,20 @@
-# MILAURE — Woman as Elements
+# MILAURE — static site
 
-Brand-awareness launch site for **MILAURE**. A welcome "door" intro opens (click) into an editorial hero with an interactive element selector — **Water · Fire · Air · Earth** — that re-themes the story, mood and first-glimpse sections (accent, gradient and hero glow shift per element). Water is the first drop; the others show a *coming soon* state.
-
-## Pages
-
-- `index.html` — home (door intro, hero element selector, story, mood, first glimpse, launch sign-up, footer)
-- `Elements.dc.html` — the four elements, one section each
-- `About.dc.html` — brand statement and the four elements
-
-## Run locally
-
-Static site — serve the folder over HTTP (don't open via `file://`, the video and runtime need a server):
-
-```bash
-python3 -m http.server 8080   # then open http://localhost:8080
-# or: npx serve .
-```
-
-## Deploy
-
-Drop the folder onto any static host (GitHub Pages, Netlify, Vercel, Cloudflare Pages). No build step. `index.html` is the entry point.
+Ready-to-deploy static files. No build step required.
 
 ## Structure
+- `index.html` — home (Water / element selector, sneak strip, showcase, launch)
+- `About.dc.html` — about page
+- `Elements.dc.html` — elements page
+- `support.js` — runtime (must sit next to the HTML files)
+- `assets/` — images, video, logos
 
+## Deploy
+Upload the entire folder to any static host (Netlify, Vercel, GitHub Pages, S3, nginx).
+`index.html` is the entry point. Everything is served as plain static files — open
+`index.html` over HTTP (not file://) so the videos and fonts load.
+
+Quick local check:
 ```
-index.html            — home page
-Elements.dc.html      — Elements page
-About.dc.html         — About page
-support.js            — lightweight runtime that renders the components
-assets/
-  hero.mp4            — hero background video
-  door.mp4            — welcome "door" intro video
-  favicon.png         — shell favicon
-  apple-touch-icon.png
+npx serve .
 ```
-
-## Editing
-
-- **Copy & per-element content** live in the `ELEMENTS` object inside the `<script data-dc-script>` block in `index.html`.
-- **Palette / element theming** are CSS custom properties in `:root` and the `html[data-element="…"]` rules at the top of each file.
-- Replace the placeholder image/mood panels with real campaign photography when assets are ready.
-
-© 2026 MILAURE — Woman as Elements

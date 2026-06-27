@@ -50,6 +50,11 @@
   p{line-height:1.2!important;letter-spacing:-0.5px!important;}
   ::selection{background:var(--accent);color:#fff;}
   @keyframes milDrift{0%{transform:scale(1.06);}100%{transform:scale(1.14);}}
+  @keyframes heroGlowDrift{0%{transform:scale(1.12) translate3d(-1.6%,0.6%,0);}50%{transform:scale(1.19) translate3d(1.8%,-1.2%,0);}100%{transform:scale(1.13) translate3d(-1%,1.2%,0);}}
+  [data-hero-glow]{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none;filter:blur(30px) saturate(1.3) brightness(1.08);mix-blend-mode:screen;opacity:.3;animation:heroGlowDrift 17s ease-in-out infinite alternate;will-change:transform,filter;}
+  [data-hero-glow-soft]{filter:blur(60px) saturate(1.35) brightness(1.12);opacity:.22;animation-duration:23s;animation-direction:alternate-reverse;mix-blend-mode:screen;}
+  html[data-reduce-motion] [data-hero-glow]{animation:none;}
+
   @keyframes revealIn{from{opacity:0;transform:translateY(40px);}to{opacity:1;transform:none;}}
   @keyframes parDrift{from{transform:translateY(-6%);}to{transform:translateY(6%);}}
   @keyframes doorPulse{0%,100%{opacity:.55;}50%{opacity:1;}}
@@ -74,7 +79,7 @@
   @media (prefers-reduced-motion:reduce){[data-reveal],[data-parallax]{animation:none;opacity:1;transform:none;}}
   html[data-reduce-motion] [data-reveal],html[data-reduce-motion] [data-parallax]{animation:none!important;opacity:1!important;transform:none!important;}
   /* door */
-  [data-door]{position:fixed;top:0;left:0;width:100%;height:100vh;height:100dvh;z-index:200;cursor:pointer;overflow:hidden;}
+  [data-door]{position:fixed;inset:0;z-index:200;cursor:pointer;overflow:hidden;}
   [data-door-half]{position:absolute;top:0;height:100%;width:50%;overflow:hidden;background:#1F3A47;transition:transform 1.2s cubic-bezier(.76,0,.24,1);will-change:transform;}
   [data-door-half-l]{left:0;}
   [data-door-half-r]{right:0;}
@@ -98,11 +103,6 @@
   html[data-element="air"] [data-moodbg]{background:linear-gradient(160deg,#FBFCFC 0%,#ECEFF0 52%,#D2D8DB 100%);}
   html[data-element="earth"] [data-moodbg]{background:linear-gradient(160deg,#E2D2BC 0%,#B68C5E 52%,#6F4A33 100%);}
   @media (max-width:920px){
-    [data-nav]{display:flex!important;justify-content:space-between!important;}
-    [data-nav-links]{display:none!important;}
-    [data-nav-utils]{gap:18px!important;justify-self:auto!important;}
-    [data-nav-utils] a{display:none!important;}
-    [data-burger]{display:flex!important;}
     [data-explain]{flex-direction:column!important;align-items:flex-start!important;gap:10px!important;}
     [data-story]{grid-template-columns:1fr!important;gap:24px!important;}
     [data-notify-grid]{grid-template-columns:1fr!important;gap:24px!important;}
@@ -111,9 +111,89 @@
   }
   @media (max-width:560px){
     [data-elselect]{grid-template-columns:repeat(2,1fr)!important;}
-    [data-glimpse-grid]{grid-template-columns:repeat(2,1fr)!important;}
-    [data-mood-tiles]{grid-template-columns:repeat(3,1fr)!important;}
+    [data-glimpse-grid]{grid-template-columns:1fr!important;}
+    [data-mood-tiles]{grid-template-columns:1fr!important;}
     [data-foot-links]{gap:16px!important;}
+  }
+  /* featured product */
+  [data-prod-img]{position:relative;overflow:hidden;aspect-ratio:3/4;background:var(--ph1);}
+  [data-prod-img] img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:opacity .6s ease;}
+  [data-prod-img] [data-prod-worn]{opacity:0;}
+  [data-prod-img]:hover [data-prod-worn]{opacity:1;}
+  [data-prod-img]:hover [data-prod-flat]{opacity:0;}
+  [data-prod-hint]{transition:opacity .4s ease;}
+  [data-prod-img]:hover [data-prod-hint]{opacity:0;}
+  [data-prod-thumbs]{display:flex;gap:10px;overflow-x:auto;scrollbar-width:none;padding-bottom:4px;}
+  [data-prod-thumbs]::-webkit-scrollbar{display:none;}
+  [data-prod-thumb]{flex:0 0 auto;width:60px;aspect-ratio:3/4;cursor:pointer;border:1px solid var(--line);overflow:hidden;background:var(--ph1);opacity:.55;transition:opacity .3s ease,border-color .3s ease;}
+  [data-prod-thumb] img{width:100%;height:100%;object-fit:cover;}
+  [data-prod-thumb]:hover{opacity:.85;}
+  [data-prod-thumb][data-active]{opacity:1;border-color:var(--ink);}
+  @media (max-width:760px){
+    [data-prod-feature]{grid-template-columns:1fr!important;gap:24px!important;}
+  }
+  /* ===== PRODUCT SHOWCASE (accordion) ===== */
+  @keyframes detailIn{from{opacity:0;transform:translateY(-14px);}to{opacity:1;transform:none;}}
+  [data-detail]{animation:detailIn .6s cubic-bezier(.16,1,.3,1) both;}
+  html[data-reduce-motion] [data-detail]{animation:none;}
+  [data-show-row]{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(10px,1.1vw,18px);}
+  [data-show-card]{position:relative;aspect-ratio:3/4.4;overflow:hidden;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer;font-family:inherit;padding:0;text-align:left;display:block;}
+  [data-show-flat]{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
+  [data-show-worn]{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transform:scale(1.05);transition:opacity .7s ease,transform 7s ease;}
+  [data-show-overlay]{position:absolute;inset:0;background:linear-gradient(180deg,rgba(20,32,40,0) 32%,rgba(20,32,40,.16) 100%);opacity:1;transition:opacity .7s ease,background .7s ease;}
+  [data-show-card]:hover [data-show-overlay]{background:linear-gradient(180deg,rgba(20,32,40,.05) 30%,rgba(20,32,40,.62) 100%);}
+  [data-show-card]:hover [data-show-worn]{opacity:1;transform:scale(1);}
+  [data-show-card]:hover [data-show-overlay]{opacity:1;}
+  [data-show-content]{position:relative;z-index:2;height:100%;display:flex;flex-direction:column;justify-content:space-between;padding:clamp(16px,1.3vw,22px);}
+  [data-show-num],[data-show-name],[data-show-cue]{transition:color .55s ease;}
+  [data-show-card]:hover [data-show-num],[data-show-card]:hover [data-show-name]{color:#F4F0E8!important;}
+  [data-show-card]:hover [data-show-cue]{color:rgba(244,240,232,.82)!important;}
+  [data-show-card][data-active]{border-color:var(--el);}
+  [data-show-card][data-active] [data-show-worn]{opacity:.16;}
+  [data-detail-img] [data-di-worn]{opacity:0;transition:opacity .6s ease;}
+  [data-detail-img]:hover [data-di-worn]{opacity:1;}
+  [data-detail-img] [data-di-flat]{transition:opacity .6s ease;}
+  [data-detail-img]:hover [data-di-flat]{opacity:0;}
+  [data-detail-img] [data-di-hint]{transition:opacity .4s ease;}
+  [data-detail-img]:hover [data-di-hint]{opacity:0;}
+  [data-sw]{width:30px;height:30px;border-radius:999px;border:1px solid var(--line);cursor:pointer;outline:1.5px solid transparent;outline-offset:3px;transition:outline-color .3s ease;padding:0;}
+  [data-sw][data-active]{outline-color:var(--ink);}
+  [data-style-grid]{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;}
+  [data-style-chip]{border:1px solid var(--line);background:var(--surface);cursor:pointer;padding:0;font-family:inherit;text-align:center;opacity:.66;transition:opacity .3s ease,border-color .3s ease;display:flex;flex-direction:column;}
+  [data-style-chip]:hover{opacity:1;}
+  [data-style-chip][data-active]{opacity:1;border-color:var(--ink);}
+  [data-style-chip] [data-chip-img]{position:relative;aspect-ratio:3/4;overflow:hidden;background:var(--ph1);}
+  [data-style-chip] [data-chip-img] img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
+  @media (max-width:980px){
+    [data-detail-grid]{grid-template-columns:1fr!important;gap:26px!important;}
+  }
+  @media (max-width:760px){
+    [data-show-row]{grid-template-columns:repeat(2,1fr)!important;}
+    [data-style-grid]{grid-template-columns:repeat(3,1fr)!important;}
+  }
+  @media (max-width:460px){
+    [data-style-grid]{grid-template-columns:repeat(2,1fr)!important;}
+  }
+  /* ===== SNEAK STRIP ===== */
+  [data-sneak-grid]{display:grid;grid-template-columns:repeat(6,1fr);gap:clamp(8px,.8vw,14px);}
+  [data-sneak-cell]{display:block;text-decoration:none;color:inherit;}
+  [data-sneak-num]{font-size:11px;letter-spacing:.06em;color:var(--muted);margin-bottom:10px;display:block;}
+  [data-sneak-img]{position:relative;aspect-ratio:1/1;overflow:hidden;background:#FFFFFF;}
+  [data-sneak-img] img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform 1.4s cubic-bezier(.16,1,.3,1);}
+  [data-sneak-img] img[data-fit="contain"]{object-fit:contain;}
+  [data-sneak-cell]:hover [data-sneak-img] img{transform:scale(1.06);}
+  [data-sneak-ph]{position:absolute;inset:0;background:repeating-linear-gradient(135deg,rgba(40,71,90,.07) 0 11px,rgba(40,71,90,.02) 11px 22px);}
+  /* ===== MARQUEE ===== */
+  @keyframes milMarquee{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+  [data-marquee]{overflow:hidden;border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:clamp(14px,1.4vw,20px) 0;background:var(--surface);}
+  [data-marquee-track]{display:flex;width:max-content;animation:milMarquee 30s linear infinite;}
+  html[data-reduce-motion] [data-marquee-track]{animation:none;}
+  [data-marquee-track] span{font-family:'Bodoni 72 Oldstyle','Bodoni Moda',serif;font-size:clamp(18px,1.8vw,28px);letter-spacing:.03em;color:#BFD9E2;white-space:nowrap;padding:0 clamp(20px,2.4vw,38px);}
+  [data-marquee-track] svg{fill:#C6DFE7;}
+  [data-marquee-track] b{color:var(--el);font-weight:400;font-size:clamp(14px,1.4vw,20px);align-self:center;}
+  @media (max-width:760px){
+    [data-sneak-grid]{grid-template-columns:repeat(3,1fr)!important;}
+    [data-blue-grid]{grid-template-columns:1fr!important;}
   }
 </style>
 </helmet>
@@ -133,31 +213,31 @@
     </div>
     <div data-door-center="" style="position:absolute;inset:0;z-index:4;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;color:#F4F0E8;padding:24px;">
       <div style="font-size:11px;letter-spacing:.34em;text-transform:uppercase;opacity:.85;margin-bottom:22px;">Welcome to</div>
-      <span style="font-family:'Bodoni Moda',serif;font-weight:400;font-size:clamp(54px,11vw,148px);line-height:.9;text-transform:uppercase;letter-spacing:.04em;">Milaure</span>
-      <div style="margin-top:clamp(20px,2.4vw,30px);font-family:'Bodoni Moda',serif;text-transform:uppercase;letter-spacing:.22em;font-weight:500;font-size:clamp(11px,1.3vw,15px);color:rgba(244,240,232,.9);">Woman as an element</div>
+      <svg viewBox="0 0 848 301" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Milaure" style="width:clamp(238px,52vw,680px);height:auto;display:block;fill:currentColor;"><path d="M83.715 53.154C89.0982 52.3106 97.0672 53.0335 102.167 54.707C135.558 65.6656 143.323 112.143 148.12 141.671C150.113 153.882 152.032 166.104 153.877 178.338C154.882 184.984 156.06 192.566 157.287 199.212C160.05 214.171 169.471 224.093 177.896 205.263C180.775 198.828 182.832 191.25 185.049 184.336L196.297 149.263C206.443 118.005 217.909 85.1709 227.277 53.9046C236.754 53.6471 250.755 53.6736 260.187 54.1452C258.471 54.6788 256.666 55.2208 255.066 56.0485C251.305 57.994 248.96 61.2516 247.712 65.2403C244.48 75.5654 247.184 125.364 247.51 139.377C247.87 157.785 248.34 176.19 248.92 194.592C249.281 204.995 248.93 220.569 252.156 230.606C253.566 234.991 260.279 237.088 264.489 238.418C248.276 238.683 231.238 238.433 214.931 238.47C224.741 235.101 227.383 232.605 227.958 221.83C228.42 213.177 227.899 204.871 227.613 196.251L226.74 162.139C226.456 150.352 226.347 138.635 225.933 126.841C225.282 108.294 225.887 89.6429 225.351 71.0877C223.936 74.2807 220.403 86.1944 219.026 90.2287L193.55 169.011C190.164 179.652 186.72 190.274 183.217 200.877C179.774 211.264 174.885 229.928 164.157 235.032C150.81 241.428 140.817 229.201 137.168 217.473C127.369 185.973 126.801 151.61 120.501 119.292C117.899 105.948 114.687 93.8805 108.631 81.8624C108.439 90.2751 105.466 108.615 104.25 117.851L95.9832 182.106C94.4682 193.655 92.5179 205.57 92.4761 217.22C92.4206 232.757 98.0875 234.929 111.125 238.532C103.147 238.415 95.1265 238.259 87.1517 238.258C79.7934 238.257 72.7059 238.704 65.3438 238.03C78.6096 235.136 83.9481 231.99 87.3322 217.693C89.8853 206.909 90.9238 195.847 92.3643 184.877C93.5837 175.592 94.7634 166.216 96.0072 156.926C98.1682 141.342 100.194 125.739 102.086 110.12C103.356 100.317 105.442 85.8984 105.745 76.2726C90.1896 53.8326 71.9663 56.4343 50.0239 66.5665C58.5333 58.9073 72.4524 54.3803 83.715 53.154Z" fill="currentColor"></path>
+<path d="M418.435 110.294C424.318 109.597 433.213 110.512 438.815 112.231C445.714 114.386 451.85 118.483 456.483 124.032C474.437 145.263 466.545 183.222 466.951 208.638C467.071 216.26 466.437 223.432 470.218 230.655C473.182 236.315 478.284 236.946 483.865 238.611C479.497 239.068 469.556 238.678 465.312 237.605C456.703 235.428 452.136 231.447 447.647 224.167C438.522 234.006 430.124 237.86 416.85 239.157C396 241.192 372.896 232.526 370.787 208.906C371.842 166.613 426.745 163.437 447.485 138.295C446.62 126.694 441.991 115.85 429.346 113.57C404.896 109.163 388.261 138.337 384.497 158.733L383.966 158.914C383.696 157.322 384.022 155.688 384.234 154.09C385.589 143.897 385.077 133.313 386.215 123.142C393.648 115.449 407.982 111.39 418.435 110.294ZM447.171 143.639C426.19 166.467 391.607 176.026 392.862 212.574C393.112 219.859 395.172 225.034 399.871 230.627C419.561 247.778 444.592 223.27 443.035 204.58C442.261 195.238 449.423 146.402 447.171 143.639Z" fill="currentColor"></path>
+<path d="M746.414 109.893C763.606 109.166 787.431 118.431 790.412 136.826C795.948 170.987 736.621 166.991 723.044 191.279C720.092 196.56 716.834 201.374 718.258 207.925C723.475 226.172 743.462 235.474 761.233 231.727C774.852 228.856 782.077 221.301 789.174 210.821C790.971 207.653 792.094 205.646 794.305 202.733C792.698 210.336 787.857 218.238 782.863 224.185C765.456 244.908 730.22 244.829 710.502 227.448C682.801 203.026 685.878 153.667 709.045 127.248C718.966 115.933 731.69 110.912 746.414 109.893ZM772.404 139.217C772.16 121.632 761.072 111.421 743.669 113.127C711.939 120.026 708.067 170.004 713.769 195.626C714.158 197.359 714.618 199.075 715.152 200.769C717.272 194.133 719.339 188.806 724.436 183.686C730.812 177.463 736.592 173.778 744.261 169.18C755.925 162.186 772.491 155.211 772.404 139.217Z" fill="currentColor"></path>
+<path d="M586.155 110.943L586.735 111.087C587.323 111.914 586.822 132.034 586.814 135.133L586.847 192.023C586.859 202.746 586.019 220.328 588.892 230.455C590.072 234.62 595.579 236.77 599.351 238.338C588.971 237.946 578.147 238.804 567.758 238.238C566.976 231.18 566.442 224.098 566.152 217.003C563.506 221.405 560.566 226.5 556.786 229.954C548.856 237.2 537.987 240.21 527.42 239.785C521.081 239.517 514.908 237.67 509.463 234.412C491.774 223.643 493.558 203.188 493.654 185.304L493.794 154.146C493.823 145.637 495.14 137.017 489.273 130.641C485.534 128.254 484.346 128.253 479.828 127.66C487.505 123.63 495.774 120.306 503.459 116.236C507.057 114.333 510.916 112.34 514.713 110.923C515.098 120.441 514.808 130.686 514.792 140.249L514.866 179.671C514.816 190.825 514.452 202.6 515.607 213.687C516.15 218.07 517.885 221.855 520.145 225.505C526.302 235.44 542.625 236.202 551.639 230.007C558.662 225.18 563.775 213.759 564.918 205.254C566.558 193.026 565.398 179.945 565.734 167.571C565.423 158.238 566.33 148.542 565.456 139.256C564.665 130.816 561.104 128.65 553.506 127.52C562.173 122.658 577.137 115.016 586.155 110.943Z" fill="currentColor"></path>
+<path d="M353.017 43.4277C354.098 47.0464 353.393 70.2474 353.399 75.778L353.482 170.13C353.499 186.249 353.161 202.419 353.677 218.52C354.065 230.643 355.923 234.263 366.992 238.452L320.722 238.407C320.555 237.154 325.578 236.242 326.853 235.264C335.387 228.719 332.877 207.622 332.783 197.779L332.537 159.521L332.599 105.531C332.617 95.0312 333.832 75.8525 330.288 65.4446C329.027 61.7436 322.847 60.5305 319.088 59.724C330.893 55.3903 342.255 49.933 353.017 43.4277Z" fill="currentColor"></path>
+<path d="M671.601 110.289C678.317 109.715 685.729 111.753 691.336 115.495C690.288 119.852 688.226 124.987 686.702 129.353C684.313 136.192 683.274 140.864 682.119 147.961C680.437 137.907 680.16 126.307 668.579 121.918C649.938 114.855 639.839 139.258 638.924 154.007C638.298 164.089 638.547 174.2 638.538 184.304C638.878 196.343 637.955 208.593 638.675 220.605C639.333 231.505 642.236 235.068 651.702 238.679C641.304 238.255 630.025 238.454 619.57 238.49C613.835 238.417 608.101 238.419 602.37 238.497C612.241 236.086 616.299 233.695 617.09 222.523C617.947 210.435 617.496 198.169 617.525 186.045C617.57 176.019 617.562 165.993 617.492 155.967C617.405 143.892 620.208 129.682 604.925 127.853C609.869 124.848 615.305 122.359 620.502 119.76C626.58 116.723 632.804 113.345 638.99 110.59C638.572 120.845 638.505 131.112 638.791 141.372C645.143 124.436 651.88 112.702 671.601 110.289Z" fill="currentColor"></path>
+<path d="M302.243 110.896L302.752 111.03C305.024 114.72 300.804 215.52 304.251 227.477C306.503 235.291 309.371 235.683 316.524 238.48C301.077 238.349 285.629 238.319 270.182 238.389C270.35 236.815 274.53 236.565 276.602 234.73C280.589 231.2 281.719 225.505 281.825 220.374C282.114 206.253 281.962 191.857 281.979 177.725L281.954 153.565C281.874 141.349 284.255 129.015 268.448 128.196C279.714 122.062 291.012 117.231 302.243 110.896Z" fill="currentColor"></path>
+<path d="M290.875 72.983C296.879 72.1814 302.396 76.3983 303.197 82.4013C303.999 88.4044 299.782 93.9209 293.779 94.7229C287.775 95.5249 282.258 91.308 281.456 85.3045C280.654 79.3011 284.871 73.7846 290.875 72.983Z" fill="currentColor"></path></svg>
+      <div style="margin-top:clamp(20px,2.4vw,30px);font-family:'Bodoni 72 Oldstyle','Bodoni Moda',serif;text-transform:uppercase;letter-spacing:.22em;font-weight:500;font-size:clamp(11px,1.3vw,15px);color:rgba(244,240,232,.9);">Woman as an element</div>
       <div data-door-prompt="" style="margin-top:clamp(34px,5vw,56px);font-size:10px;letter-spacing:.32em;text-transform:uppercase;opacity:.6;">Click anywhere to enter</div>
     </div>
   </div>
   </sc-if>
 
   <!-- ============ NAV ============ -->
-  <nav data-nav="" style="position:fixed;top:0;left:0;right:0;z-index:60;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding:22px clamp(20px,3.4vw,52px);">
-    <div data-nav-links="" style="display:flex;gap:clamp(20px,2.2vw,40px);font-size:14px;letter-spacing:.01em;">
-      <a data-link="" href="About.dc.html">About</a>
-      <a data-link="" href="Elements.dc.html">Elements</a>
-    </div>
-    <a href="#top" style="justify-self:center;text-decoration:none;color:inherit;font-family:'Bodoni Moda',serif;font-size:clamp(20px,1.9vw,27px);letter-spacing:.34em;padding-left:.34em;font-weight:500;">MILAURE</a>
-    <div data-nav-utils="" style="justify-self:end;display:flex;gap:clamp(18px,2vw,32px);font-size:14px;align-items:center;">
+  <nav data-nav="" style="position:fixed;top:0;left:0;right:0;z-index:60;display:flex;justify-content:space-between;align-items:center;padding:18px clamp(20px,3.4vw,52px);">
+    <a href="#top" aria-label="Milaure home" style="text-decoration:none;color:inherit;display:flex;align-items:center;"><svg viewBox="0 0 301 301" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Milaure" style="width:38px;height:38px;display:block;fill:currentColor;"><path d="M76.691 58.3537C82.0743 57.5103 90.0433 58.2332 95.1429 59.9067C128.534 70.8653 136.299 117.343 141.096 146.871C143.089 159.081 145.008 171.304 146.853 183.538C147.858 190.184 149.036 197.766 150.263 204.412C153.026 219.371 162.448 229.293 170.872 210.463C173.751 204.027 175.808 196.45 178.025 189.536L189.273 154.463C199.42 123.204 210.885 90.3706 220.254 59.1043C229.73 58.8468 243.731 58.8733 253.163 59.3449C251.447 59.8786 249.642 60.4205 248.042 61.2482C244.281 63.1937 241.936 66.4513 240.688 70.4401C237.456 80.7651 240.16 130.563 240.486 144.577C240.846 162.985 241.316 181.39 241.896 199.792C242.257 210.194 241.906 225.768 245.132 235.806C246.542 240.191 253.255 242.287 257.465 243.618C241.252 243.882 224.214 243.633 207.907 243.669C217.717 240.301 220.359 237.805 220.934 227.03C221.396 218.376 220.875 210.071 220.589 201.451L219.716 167.339C219.432 155.551 219.323 143.835 218.909 132.04C218.258 113.493 218.864 94.8426 218.327 76.2874C216.912 79.4804 213.379 91.3941 212.003 95.4284L186.526 174.211C183.14 184.852 179.696 195.474 176.193 206.077C172.75 216.464 167.861 235.128 157.133 240.231C143.786 246.627 133.793 234.401 130.144 222.673C120.345 191.173 119.778 156.81 113.477 124.492C110.875 111.148 107.663 99.0802 101.607 87.0621C101.416 95.4748 98.4426 113.815 97.2265 123.05L88.9593 187.305C87.4442 198.855 85.494 210.77 85.4522 222.42C85.3967 237.956 91.0635 240.129 104.102 243.732C96.123 243.615 88.1026 243.459 80.1277 243.458C72.7694 243.457 65.6819 243.903 58.3199 243.23C71.5856 240.335 76.9241 237.189 80.3083 222.893C82.8614 212.108 83.8998 201.047 85.3404 190.077C86.5598 180.792 87.7395 171.415 88.9833 162.126C91.1443 146.541 93.1703 130.939 95.0617 115.319C96.3317 105.516 98.4181 91.0981 98.7208 81.4723C83.1657 59.0323 64.9424 61.634 43 71.7662C51.5094 64.107 65.4285 59.58 76.691 58.3537Z" fill="currentColor"></path></svg></a>
+    <div style="display:flex;align-items:center;gap:clamp(16px,2vw,26px);">
       <button onClick="{{ toggleSound }}" aria-label="Toggle sound" style="display:flex;align-items:center;justify-content:center;background:transparent;border:none;color:inherit;cursor:pointer;padding:0;font-family:inherit;">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4V5z"></path><path data-sound-on-only="" d="M15.5 8.5a5 5 0 0 1 0 7"></path><path data-sound-on-only="" d="M18.5 6a9 9 0 0 1 0 12"></path><line data-sound-off-only="" x1="22" y1="9" x2="16" y2="15"></line><line data-sound-off-only="" x1="16" y1="9" x2="22" y2="15"></line></svg>
       </button>
-      <a data-link="" href="#" style="">Instagram</a>
-      <a data-link="" href="#notify" style="">Contact</a>
-      <a href="#notify" style="text-decoration:none;color:inherit;border:1px solid currentColor;border-radius:0;padding:8px 18px;font-size:13px;letter-spacing:.04em;">Notify Me</a>
-      <button data-burger="" onClick="{{ toggleMenu }}" aria-label="Open menu" style="display:none;flex-direction:column;justify-content:center;gap:6px;background:transparent;border:none;color:inherit;cursor:pointer;padding:0;width:28px;height:22px;">
-        <span style="display:block;width:26px;height:1.5px;background:currentColor;"></span>
-        <span style="display:block;width:26px;height:1.5px;background:currentColor;"></span>
-        <span style="display:block;width:26px;height:1.5px;background:currentColor;"></span>
+      <button data-burger="" onClick="{{ toggleMenu }}" aria-label="Open menu" style="display:flex;flex-direction:column;justify-content:center;gap:6px;background:transparent;border:none;color:inherit;cursor:pointer;padding:0;width:30px;height:22px;">
+        <span style="display:block;width:28px;height:1.5px;background:currentColor;"></span>
+        <span style="display:block;width:28px;height:1.5px;background:currentColor;"></span>
+        <span style="display:block;width:28px;height:1.5px;background:currentColor;"></span>
       </button>
     </div>
   </nav>
@@ -166,27 +246,29 @@
   <sc-if value="{{ menuOpen }}" hint-placeholder-val="{{ false }}">
   <div style="position:fixed;inset:0;z-index:140;background:var(--dark);color:var(--dark-ink);display:flex;flex-direction:column;padding:24px clamp(20px,3.4vw,52px) 40px;">
     <div style="display:flex;justify-content:space-between;align-items:center;">
-      <span style="font-family:'Bodoni Moda',serif;letter-spacing:.34em;padding-left:.34em;font-size:22px;font-weight:500;">MILAURE</span>
+      <span style="font-family:'Bodoni 72 Oldstyle','Bodoni Moda',serif;letter-spacing:.34em;padding-left:.34em;font-size:22px;font-weight:500;">MILAURE</span>
       <button onClick="{{ closeMenu }}" aria-label="Close menu" style="background:transparent;border:none;color:inherit;cursor:pointer;width:30px;height:30px;position:relative;">
         <span style="position:absolute;left:4px;top:14px;width:22px;height:1.5px;background:currentColor;transform:rotate(45deg);"></span>
         <span style="position:absolute;left:4px;top:14px;width:22px;height:1.5px;background:currentColor;transform:rotate(-45deg);"></span>
       </button>
     </div>
     <div style="margin:auto 0;display:flex;flex-direction:column;gap:6px;">
-      <a onClick="{{ closeMenu }}" href="About.dc.html" style="font-family:'Bodoni Moda',serif;font-size:clamp(34px,11vw,52px);line-height:1.15;color:inherit;text-decoration:none;">About</a>
-      <a onClick="{{ closeMenu }}" href="Elements.dc.html" style="font-family:'Bodoni Moda',serif;font-size:clamp(34px,11vw,52px);line-height:1.15;color:inherit;text-decoration:none;">Elements</a>
-      <a onClick="{{ closeMenu }}" href="#notify" style="font-family:'Bodoni Moda',serif;font-size:clamp(34px,11vw,52px);line-height:1.15;color:inherit;text-decoration:none;">Contact</a>
-      <a onClick="{{ closeMenu }}" href="#" style="font-family:'Bodoni Moda',serif;font-size:clamp(34px,11vw,52px);line-height:1.15;color:inherit;text-decoration:none;">Instagram</a>
+      <a onClick="{{ closeMenu }}" href="About.dc.html" style="font-family:'Bodoni 72 Oldstyle','Bodoni Moda',serif;font-size:clamp(34px,11vw,52px);line-height:1.15;color:inherit;text-decoration:none;">About</a>
+      <a onClick="{{ closeMenu }}" href="Elements.dc.html" style="font-family:'Bodoni 72 Oldstyle','Bodoni Moda',serif;font-size:clamp(34px,11vw,52px);line-height:1.15;color:inherit;text-decoration:none;">Elements</a>
+      <a onClick="{{ closeMenu }}" href="#notify" style="font-family:'Bodoni 72 Oldstyle','Bodoni Moda',serif;font-size:clamp(34px,11vw,52px);line-height:1.15;color:inherit;text-decoration:none;">Contact</a>
+      <a onClick="{{ closeMenu }}" href="#" style="font-family:'Bodoni 72 Oldstyle','Bodoni Moda',serif;font-size:clamp(34px,11vw,52px);line-height:1.15;color:inherit;text-decoration:none;">Instagram</a>
     </div>
     <a onClick="{{ closeMenu }}" href="#notify" style="border:1px solid currentColor;padding:15px;text-align:center;text-transform:uppercase;letter-spacing:.12em;font-size:13px;text-decoration:none;color:inherit;">Notify Me</a>
   </div>
   </sc-if>
 
   <!-- ============ HERO / ELEMENT SELECTOR ============ -->
-  <header id="top" style="position:relative;min-height:100vh;min-height:100dvh;width:100%;overflow:hidden;background:#1F3A47;display:flex;">
+  <header id="top" style="position:relative;min-height:100vh;width:100%;overflow:hidden;background:#1F3A47;display:flex;">
     <video data-hero-video="" muted="" loop="" autoplay="" playsinline="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;animation:milDrift 32s ease-in-out infinite alternate;">
       <source src="assets/hero.mp4" type="video/mp4">
     </video>
+    <video data-hero-glow="" data-hero-glow-soft="" muted="" loop="" autoplay="" playsinline=""><source src="assets/hero.mp4" type="video/mp4"></video>
+    <video data-hero-glow="" muted="" loop="" autoplay="" playsinline=""><source src="assets/hero.mp4" type="video/mp4"></video>
     <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(20,32,40,.5) 0%,rgba(20,32,40,.12) 30%,rgba(20,32,40,.16) 54%,rgba(20,32,40,.68) 100%);"></div>
     <div style="position:absolute;inset:0;overflow:hidden;z-index:1;pointer-events:none;"><div data-hero-tint=""></div></div>
     <div data-hero-noise=""></div>
@@ -195,28 +277,35 @@
     <div style="position:absolute;right:clamp(20px,3.4vw,52px);top:108px;z-index:2;color:#EFE9DE;text-align:right;"><div style="font-size:11px;letter-spacing:.2em;line-height:1.7;text-transform:uppercase;">Brand opening<br>2026</div></div>
 
     <div style="position:relative;z-index:2;margin:auto;width:100%;padding:150px clamp(20px,3.4vw,52px) 170px;display:flex;flex-direction:column;align-items:center;text-align:center;color:#F4F0E8;">
-      <div style="font-size: clamp(10px,1.1vw,13px); letter-spacing: 0.22em; text-transform: uppercase; font-weight: 500; opacity: .82; margin-bottom: clamp(16px,2.2vw,28px); font-family: Bodoni Moda">Woman as Elements</div>
-      <span style="font-family:'Bodoni Moda',serif;font-weight:400;font-size:clamp(56px,15.5vw,250px);line-height:.84;letter-spacing:.04em;text-transform:uppercase;white-space:nowrap;">Milaure</span>
+      <div style="font-size: clamp(10px,1.1vw,13px); letter-spacing: 0.22em; text-transform: uppercase; font-weight: 500; opacity: .82; margin-bottom: clamp(16px,2.2vw,28px); font-family: 'Bodoni 72 Oldstyle','Bodoni Moda',serif">Woman as Elements</div>
+      <svg viewBox="0 0 848 301" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Milaure" style="width:clamp(280px,72vw,1180px);height:auto;display:block;fill:currentColor;"><path d="M83.715 53.154C89.0982 52.3106 97.0672 53.0335 102.167 54.707C135.558 65.6656 143.323 112.143 148.12 141.671C150.113 153.882 152.032 166.104 153.877 178.338C154.882 184.984 156.06 192.566 157.287 199.212C160.05 214.171 169.471 224.093 177.896 205.263C180.775 198.828 182.832 191.25 185.049 184.336L196.297 149.263C206.443 118.005 217.909 85.1709 227.277 53.9046C236.754 53.6471 250.755 53.6736 260.187 54.1452C258.471 54.6788 256.666 55.2208 255.066 56.0485C251.305 57.994 248.96 61.2516 247.712 65.2403C244.48 75.5654 247.184 125.364 247.51 139.377C247.87 157.785 248.34 176.19 248.92 194.592C249.281 204.995 248.93 220.569 252.156 230.606C253.566 234.991 260.279 237.088 264.489 238.418C248.276 238.683 231.238 238.433 214.931 238.47C224.741 235.101 227.383 232.605 227.958 221.83C228.42 213.177 227.899 204.871 227.613 196.251L226.74 162.139C226.456 150.352 226.347 138.635 225.933 126.841C225.282 108.294 225.887 89.6429 225.351 71.0877C223.936 74.2807 220.403 86.1944 219.026 90.2287L193.55 169.011C190.164 179.652 186.72 190.274 183.217 200.877C179.774 211.264 174.885 229.928 164.157 235.032C150.81 241.428 140.817 229.201 137.168 217.473C127.369 185.973 126.801 151.61 120.501 119.292C117.899 105.948 114.687 93.8805 108.631 81.8624C108.439 90.2751 105.466 108.615 104.25 117.851L95.9832 182.106C94.4682 193.655 92.5179 205.57 92.4761 217.22C92.4206 232.757 98.0875 234.929 111.125 238.532C103.147 238.415 95.1265 238.259 87.1517 238.258C79.7934 238.257 72.7059 238.704 65.3438 238.03C78.6096 235.136 83.9481 231.99 87.3322 217.693C89.8853 206.909 90.9238 195.847 92.3643 184.877C93.5837 175.592 94.7634 166.216 96.0072 156.926C98.1682 141.342 100.194 125.739 102.086 110.12C103.356 100.317 105.442 85.8984 105.745 76.2726C90.1896 53.8326 71.9663 56.4343 50.0239 66.5665C58.5333 58.9073 72.4524 54.3803 83.715 53.154Z" fill="currentColor"></path>
+<path d="M418.435 110.294C424.318 109.597 433.213 110.512 438.815 112.231C445.714 114.386 451.85 118.483 456.483 124.032C474.437 145.263 466.545 183.222 466.951 208.638C467.071 216.26 466.437 223.432 470.218 230.655C473.182 236.315 478.284 236.946 483.865 238.611C479.497 239.068 469.556 238.678 465.312 237.605C456.703 235.428 452.136 231.447 447.647 224.167C438.522 234.006 430.124 237.86 416.85 239.157C396 241.192 372.896 232.526 370.787 208.906C371.842 166.613 426.745 163.437 447.485 138.295C446.62 126.694 441.991 115.85 429.346 113.57C404.896 109.163 388.261 138.337 384.497 158.733L383.966 158.914C383.696 157.322 384.022 155.688 384.234 154.09C385.589 143.897 385.077 133.313 386.215 123.142C393.648 115.449 407.982 111.39 418.435 110.294ZM447.171 143.639C426.19 166.467 391.607 176.026 392.862 212.574C393.112 219.859 395.172 225.034 399.871 230.627C419.561 247.778 444.592 223.27 443.035 204.58C442.261 195.238 449.423 146.402 447.171 143.639Z" fill="currentColor"></path>
+<path d="M746.414 109.893C763.606 109.166 787.431 118.431 790.412 136.826C795.948 170.987 736.621 166.991 723.044 191.279C720.092 196.56 716.834 201.374 718.258 207.925C723.475 226.172 743.462 235.474 761.233 231.727C774.852 228.856 782.077 221.301 789.174 210.821C790.971 207.653 792.094 205.646 794.305 202.733C792.698 210.336 787.857 218.238 782.863 224.185C765.456 244.908 730.22 244.829 710.502 227.448C682.801 203.026 685.878 153.667 709.045 127.248C718.966 115.933 731.69 110.912 746.414 109.893ZM772.404 139.217C772.16 121.632 761.072 111.421 743.669 113.127C711.939 120.026 708.067 170.004 713.769 195.626C714.158 197.359 714.618 199.075 715.152 200.769C717.272 194.133 719.339 188.806 724.436 183.686C730.812 177.463 736.592 173.778 744.261 169.18C755.925 162.186 772.491 155.211 772.404 139.217Z" fill="currentColor"></path>
+<path d="M586.155 110.943L586.735 111.087C587.323 111.914 586.822 132.034 586.814 135.133L586.847 192.023C586.859 202.746 586.019 220.328 588.892 230.455C590.072 234.62 595.579 236.77 599.351 238.338C588.971 237.946 578.147 238.804 567.758 238.238C566.976 231.18 566.442 224.098 566.152 217.003C563.506 221.405 560.566 226.5 556.786 229.954C548.856 237.2 537.987 240.21 527.42 239.785C521.081 239.517 514.908 237.67 509.463 234.412C491.774 223.643 493.558 203.188 493.654 185.304L493.794 154.146C493.823 145.637 495.14 137.017 489.273 130.641C485.534 128.254 484.346 128.253 479.828 127.66C487.505 123.63 495.774 120.306 503.459 116.236C507.057 114.333 510.916 112.34 514.713 110.923C515.098 120.441 514.808 130.686 514.792 140.249L514.866 179.671C514.816 190.825 514.452 202.6 515.607 213.687C516.15 218.07 517.885 221.855 520.145 225.505C526.302 235.44 542.625 236.202 551.639 230.007C558.662 225.18 563.775 213.759 564.918 205.254C566.558 193.026 565.398 179.945 565.734 167.571C565.423 158.238 566.33 148.542 565.456 139.256C564.665 130.816 561.104 128.65 553.506 127.52C562.173 122.658 577.137 115.016 586.155 110.943Z" fill="currentColor"></path>
+<path d="M353.017 43.4277C354.098 47.0464 353.393 70.2474 353.399 75.778L353.482 170.13C353.499 186.249 353.161 202.419 353.677 218.52C354.065 230.643 355.923 234.263 366.992 238.452L320.722 238.407C320.555 237.154 325.578 236.242 326.853 235.264C335.387 228.719 332.877 207.622 332.783 197.779L332.537 159.521L332.599 105.531C332.617 95.0312 333.832 75.8525 330.288 65.4446C329.027 61.7436 322.847 60.5305 319.088 59.724C330.893 55.3903 342.255 49.933 353.017 43.4277Z" fill="currentColor"></path>
+<path d="M671.601 110.289C678.317 109.715 685.729 111.753 691.336 115.495C690.288 119.852 688.226 124.987 686.702 129.353C684.313 136.192 683.274 140.864 682.119 147.961C680.437 137.907 680.16 126.307 668.579 121.918C649.938 114.855 639.839 139.258 638.924 154.007C638.298 164.089 638.547 174.2 638.538 184.304C638.878 196.343 637.955 208.593 638.675 220.605C639.333 231.505 642.236 235.068 651.702 238.679C641.304 238.255 630.025 238.454 619.57 238.49C613.835 238.417 608.101 238.419 602.37 238.497C612.241 236.086 616.299 233.695 617.09 222.523C617.947 210.435 617.496 198.169 617.525 186.045C617.57 176.019 617.562 165.993 617.492 155.967C617.405 143.892 620.208 129.682 604.925 127.853C609.869 124.848 615.305 122.359 620.502 119.76C626.58 116.723 632.804 113.345 638.99 110.59C638.572 120.845 638.505 131.112 638.791 141.372C645.143 124.436 651.88 112.702 671.601 110.289Z" fill="currentColor"></path>
+<path d="M302.243 110.896L302.752 111.03C305.024 114.72 300.804 215.52 304.251 227.477C306.503 235.291 309.371 235.683 316.524 238.48C301.077 238.349 285.629 238.319 270.182 238.389C270.35 236.815 274.53 236.565 276.602 234.73C280.589 231.2 281.719 225.505 281.825 220.374C282.114 206.253 281.962 191.857 281.979 177.725L281.954 153.565C281.874 141.349 284.255 129.015 268.448 128.196C279.714 122.062 291.012 117.231 302.243 110.896Z" fill="currentColor"></path>
+<path d="M290.875 72.983C296.879 72.1814 302.396 76.3983 303.197 82.4013C303.999 88.4044 299.782 93.9209 293.779 94.7229C287.775 95.5249 282.258 91.308 281.456 85.3045C280.654 79.3011 284.871 73.7846 290.875 72.983Z" fill="currentColor"></path></svg>
     </div>
 
 
 
     <!-- element selector -->
     <div data-elselect="" style="position:absolute;left:0;right:0;bottom:0;z-index:2;display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid rgba(244,240,232,.22);">
-      <button data-elbtn="water" onClick="{{ selWater }}" onMouseEnter="{{ selWater }}">
-        <div style="font-family:'Bodoni Moda',serif;font-size:clamp(18px,1.9vw,26px);margin-bottom:7px;">Water</div>
+      <button data-elbtn="water" onClick="{{ selWater }}">
+        <div style="font-family:'Bodoni 72 Oldstyle','Bodoni Moda',serif;font-size:clamp(18px,1.9vw,26px);margin-bottom:7px;">Water</div>
         <div style="font-size:11px;letter-spacing:.04em;color:rgba(244,240,232,.66);">Softness, movement, intuition.</div>
       </button>
-      <button data-elbtn="fire" onClick="{{ selFire }}" onMouseEnter="{{ selFire }}" style="border-left:1px solid rgba(244,240,232,.16);">
-        <div style="font-family:'Bodoni Moda',serif;font-size:clamp(18px,1.9vw,26px);margin-bottom:7px;">Fire</div>
+      <button data-elbtn="fire" onClick="{{ selFire }}" style="border-left:1px solid rgba(244,240,232,.16);">
+        <div style="font-family:'Bodoni 72 Oldstyle','Bodoni Moda',serif;font-size:clamp(18px,1.9vw,26px);margin-bottom:7px;">Fire</div>
         <div style="font-size:11px;letter-spacing:.04em;color:rgba(244,240,232,.66);">Confidence, passion, visibility.</div>
       </button>
-      <button data-elbtn="air" onClick="{{ selAir }}" onMouseEnter="{{ selAir }}" style="border-left:1px solid rgba(244,240,232,.16);">
-        <div style="font-family:'Bodoni Moda',serif;font-size:clamp(18px,1.9vw,26px);margin-bottom:7px;">Air</div>
+      <button data-elbtn="air" onClick="{{ selAir }}" style="border-left:1px solid rgba(244,240,232,.16);">
+        <div style="font-family:'Bodoni 72 Oldstyle','Bodoni Moda',serif;font-size:clamp(18px,1.9vw,26px);margin-bottom:7px;">Air</div>
         <div style="font-size:11px;letter-spacing:.04em;color:rgba(244,240,232,.66);">Lightness, choice, independence.</div>
       </button>
-      <button data-elbtn="earth" onClick="{{ selEarth }}" onMouseEnter="{{ selEarth }}" style="border-left:1px solid rgba(244,240,232,.16);">
-        <div style="font-family:'Bodoni Moda',serif;font-size:clamp(18px,1.9vw,26px);margin-bottom:7px;">Earth</div>
+      <button data-elbtn="earth" onClick="{{ selEarth }}" style="border-left:1px solid rgba(244,240,232,.16);">
+        <div style="font-family:'Bodoni 72 Oldstyle','Bodoni Moda',serif;font-size:clamp(18px,1.9vw,26px);margin-bottom:7px;">Earth</div>
         <div style="font-size:11px;letter-spacing:.04em;color:rgba(244,240,232,.66);">Grounding, strength, self-worth.</div>
       </button>
     </div>
@@ -230,34 +319,77 @@
     </div>
   </section>
 
+  <!-- ============ SNEAK STRIP ============ -->
+  <section style="background:var(--surface);border-bottom:1px solid var(--line);padding:clamp(48px,7vw,104px) clamp(20px,3.4vw,52px);">
+    <div style="max-width:1640px;margin:0 auto;">
+      <div data-reveal="" style="margin-bottom:clamp(40px,6vw,90px);max-width:62ch;">
+        <div style="font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--el);margin-bottom:20px;">{{ sneak.eyebrow }}</div>
+        <p style="margin:0;font-size:clamp(15px,1.3vw,17px);line-height:1.5;color:var(--muted);">{{ sneak.intro }}</p>
+      </div>
+      <div data-sneak-grid="" data-reveal="">
+        <sc-for list="{{ sneak.items }}" as="s" hint-placeholder-count="8">
+          <a data-sneak-cell="" href="{{ sneak.href }}">
+            <span data-sneak-num="">{{ s.n }}</span>
+            <div data-sneak-img="">
+              <sc-if value="{{ s.img }}" hint-placeholder-val="{{ false }}">
+                <img data-imgsrc="{{ s.img }}" alt="{{ s.label }}" data-fit="{{ s.fit }}">
+              </sc-if>
+              <sc-if value="{{ s.noImg }}" hint-placeholder-val="{{ true }}">
+                <div data-sneak-ph=""></div>
+              </sc-if>
+            </div>
+          </a>
+        </sc-for>
+      </div>
+      <div data-reveal="" style="margin-top:clamp(30px,4vw,56px);display:flex;flex-wrap:wrap;gap:10px clamp(14px,2vw,26px);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);">
+        <span>{{ sneak.tag }}</span><span>/</span><span>{{ cur.name }}</span><span>/</span><span>2026</span>
+      </div>
+    </div>
+  </section>
+
   <!-- ============ SELECTED ELEMENT STORY ============ -->
   <section id="story" style="background:var(--surface);padding:clamp(56px,8vw,130px) clamp(20px,3.4vw,52px);">
     <div data-story="" style="max-width:1640px;margin:0 auto;display:grid;grid-template-columns:.85fr 1.15fr;gap:clamp(36px,6vw,110px);align-items:start;">
       <div data-reveal="">
         <div style="font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--el);margin-bottom:18px;">Selected Element</div>
-        <h2 style="margin:0;font-family:'Bodoni Moda',serif;font-weight:400;font-size:clamp(64px,9vw,150px);line-height:.92;color:var(--ink);">{{ cur.name }}</h2>
+        <h2 style="margin:0;font-family:'Bodoni 72 Oldstyle','Bodoni Moda',serif;font-weight:400;font-size:clamp(64px,9vw,150px);line-height:.92;color:var(--ink);">{{ cur.name }}</h2>
         <sc-if value="{{ cur.comingSoon }}" hint-placeholder-val="{{ false }}">
           <div style="margin-top:26px;display:inline-block;border:1px solid var(--line);padding:9px 18px;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);">Coming soon</div>
         </sc-if>
       </div>
       <div data-reveal="" style="padding-top:clamp(8px,3vw,40px);">
-        <h3 style="margin:0 0 18px;font-family:'Bodoni Moda',serif;font-weight:400;font-size:clamp(22px,2.2vw,32px);line-height:1.1;color:var(--ink);">{{ cur.lead }}</h3>
-        <p style="margin: 0; font-size: 16px; line-height: 1.2; color: var(--ink); max-width: 52ch; letter-spacing: -0.5px">{{ cur.bodyText }}</p>
+        <h3 style="margin:0 0 18px;font-family:'Bodoni 72 Oldstyle','Bodoni Moda',serif;font-weight:400;font-size:clamp(22px,2.2vw,32px);line-height:1.1;color:var(--ink);">{{ cur.lead }}</h3>
+        <p style="margin: 0; font-size: 16px; line-height: 1.2; color: #7B97A6; max-width: 52ch; letter-spacing: -0.5px">{{ cur.bodyText }}</p>
       </div>
     </div>
   </section>
+
+  <!-- ============ RUNNING LINE ============ -->
+  <div data-marquee="" aria-hidden="true">
+    <div data-marquee-track="">
+      <sc-for list="{{ marqueeLoop }}" as="m" hint-placeholder-count="10">
+        <span>{{ m.word }}</span><svg viewBox="0 0 301 301" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style="width:clamp(15px,1.5vw,20px);height:auto;align-self:center;flex:none;fill:#C6DFE7;">><path d="M76.691 58.3537C82.0743 57.5103 90.0433 58.2332 95.1429 59.9067C128.534 70.8653 136.299 117.343 141.096 146.871C143.089 159.081 145.008 171.304 146.853 183.538C147.858 190.184 149.036 197.766 150.263 204.412C153.026 219.371 162.448 229.293 170.872 210.463C173.751 204.027 175.808 196.45 178.025 189.536L189.273 154.463C199.42 123.204 210.885 90.3706 220.254 59.1043C229.73 58.8468 243.731 58.8733 253.163 59.3449C251.447 59.8786 249.642 60.4205 248.042 61.2482C244.281 63.1937 241.936 66.4513 240.688 70.4401C237.456 80.7651 240.16 130.563 240.486 144.577C240.846 162.985 241.316 181.39 241.896 199.792C242.257 210.194 241.906 225.768 245.132 235.806C246.542 240.191 253.255 242.287 257.465 243.618C241.252 243.882 224.214 243.633 207.907 243.669C217.717 240.301 220.359 237.805 220.934 227.03C221.396 218.376 220.875 210.071 220.589 201.451L219.716 167.339C219.432 155.551 219.323 143.835 218.909 132.04C218.258 113.493 218.864 94.8426 218.327 76.2874C216.912 79.4804 213.379 91.3941 212.003 95.4284L186.526 174.211C183.14 184.852 179.696 195.474 176.193 206.077C172.75 216.464 167.861 235.128 157.133 240.231C143.786 246.627 133.793 234.401 130.144 222.673C120.345 191.173 119.778 156.81 113.477 124.492C110.875 111.148 107.663 99.0802 101.607 87.0621C101.416 95.4748 98.4426 113.815 97.2265 123.05L88.9593 187.305C87.4442 198.855 85.494 210.77 85.4522 222.42C85.3967 237.956 91.0635 240.129 104.102 243.732C96.123 243.615 88.1026 243.459 80.1277 243.458C72.7694 243.457 65.6819 243.903 58.3199 243.23C71.5856 240.335 76.9241 237.189 80.3083 222.893C82.8614 212.108 83.8998 201.047 85.3404 190.077C86.5598 180.792 87.7395 171.415 88.9833 162.126C91.1443 146.541 93.1703 130.939 95.0617 115.319C96.3317 105.516 98.4181 91.0981 98.7208 81.4723C83.1657 59.0323 64.9424 61.634 43 71.7662C51.5094 64.107 65.4285 59.58 76.691 58.3537Z" fill="currentColor"></path></svg>
+      </sc-for>
+    </div>
+  </div>
 
   <!-- ============ MOOD / VISUAL WORLD ============ -->
   <section id="mood" data-moodbg="" style="position:relative;overflow:hidden;padding:clamp(60px,9vw,150px) clamp(20px,3.4vw,52px);color:#21323B;">
     <div style="position:relative;max-width:1640px;margin:0 auto;">
       <div data-reveal="" style="font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:rgba(33,50,59,.7);margin-bottom:20px;">The world of {{ cur.name }}</div>
-      <div data-reveal="" style="font-family:'Bodoni Moda',serif;font-size:clamp(28px,4vw,62px);line-height:1;max-width:18ch;margin-bottom:18px;">{{ cur.moodWords }}</div>
-      <p data-reveal="" style="margin:0 0 clamp(34px,4vw,58px);font-size:15px;letter-spacing:.02em;color:rgba(33,50,59,.78);">{{ cur.moodCaption }}</p>
+      
+      
       <div data-mood-tiles="" data-reveal="" style="display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(14px,1.6vw,26px);">
         <sc-for list="{{ cur.moodTiles }}" as="t" hint-placeholder-count="3">
           <div style="position:relative;aspect-ratio:4/5;overflow:hidden;border:1px solid rgba(255,255,255,.5);background:rgba(255,255,255,.16);backdrop-filter:blur(2px);">
-            <div style="position:absolute;inset:0;background:repeating-linear-gradient(135deg,rgba(255,255,255,.16) 0 12px,rgba(255,255,255,.04) 12px 24px);"></div>
-            <span style="position:absolute;left:12px;bottom:11px;font-family:ui-monospace,'SF Mono',Menlo,monospace;font-size:10px;letter-spacing:.1em;color:rgba(28,42,50,.82);text-transform:uppercase;">{{ t }}</span>
+            <sc-if value="{{ t.img }}" hint-placeholder-val="{{ false }}">
+              <img data-imgsrc="{{ t.img }}" alt="{{ t.label }}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;">
+              <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0) 55%,rgba(0,0,0,.32) 100%);"></div>
+            </sc-if>
+            <sc-if value="{{ t.noImg }}" hint-placeholder-val="{{ true }}">
+              <div style="position:absolute;inset:0;background:repeating-linear-gradient(135deg,rgba(255,255,255,.16) 0 12px,rgba(255,255,255,.04) 12px 24px);"></div>
+            </sc-if>
+            <span style="position:absolute;left:12px;bottom:11px;font-family:ui-monospace,'SF Mono',Menlo,monospace;font-size:10px;letter-spacing:.1em;color:{{ t.labelColor }};text-transform:uppercase;">{{ t.label }}</span>
           </div>
         </sc-for>
       </div>
@@ -270,28 +402,90 @@
       <div data-reveal="" style="display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:18px;margin-bottom:clamp(34px,4vw,58px);">
         <div style="max-width:660px;">
           <div style="font-size:13px;letter-spacing:.2em;text-transform:uppercase;color:var(--el);margin-bottom:18px;">First Glimpse — {{ cur.name }}</div>
-          <p style="margin:0;font-size:clamp(18px,1.5vw,22px);line-height:1.5;color:var(--ink);font-family:'Bodoni Moda',serif;">{{ cur.glimpseIntro }}</p>
+          <p style="margin: 0; font-size: clamp(18px,1.5vw,22px); line-height: 1.2; color: #7B97A6; font-family: Helvetica Neue">{{ cur.glimpseIntro }}</p>
         </div>
         <div style="font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);">First Edition&nbsp;&nbsp;/&nbsp;&nbsp;{{ cur.name }}&nbsp;&nbsp;/&nbsp;&nbsp;2026</div>
       </div>
 
       <sc-if value="{{ cur.isDrop }}" hint-placeholder-val="{{ true }}">
-      <div>
-        <div data-glimpse-grid="" style="display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(14px,1.6vw,26px);">
-          <sc-for list="{{ cur.glimpse }}" as="p" hint-placeholder-count="4">
-            <div data-reveal="" style="cursor:pointer;">
-              <div style="font-size:12px;letter-spacing:.1em;color:var(--muted);margin-bottom:12px;">{{ p.n }}</div>
-              <div style="position:relative;overflow:hidden;aspect-ratio:3/4;background:var(--ph1);margin-bottom:16px;">
-                <div data-parallax="" style="position:absolute;inset:-8% 0;background:repeating-linear-gradient(135deg,var(--ph1) 0 12px,var(--ph2) 12px 24px);"></div>
-                <span style="position:absolute;left:12px;bottom:10px;font-family:ui-monospace,'SF Mono',Menlo,monospace;font-size:9px;letter-spacing:.1em;color:var(--muted);text-transform:uppercase;">[ water piece ]</span>
-              </div>
-              <div style="font-size:13px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:8px;color:var(--ink);">{{ p.name }}</div>
-              <div style="font-size: 13px; line-height: 1.2; color: var(--muted); max-width: 30ch; letter-spacing: -0.5px">{{ p.note }}</div>
+      <div data-showcase="">
+
+        <!-- EXPANDED DETAIL — opens above the row -->
+        <sc-if value="{{ show.open }}" hint-placeholder-val="{{ false }}">
+        <div data-detail="" style="border:1px solid var(--line);background:var(--surface);padding:clamp(22px,2.4vw,40px);margin-bottom:clamp(20px,2vw,34px);">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:clamp(20px,2vw,30px);">
+            <div style="font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--el);">First Drop · {{ show.detail.n }}</div>
+            <button onClick="{{ show.close }}" aria-label="Close" style="display:flex;align-items:center;gap:9px;background:transparent;border:none;color:var(--muted);font-family:inherit;font-size:11px;letter-spacing:.16em;text-transform:uppercase;cursor:pointer;padding:0;">
+              Close
+              <span style="position:relative;display:inline-block;width:16px;height:16px;">
+                <span style="position:absolute;left:1px;top:7px;width:14px;height:1.4px;background:currentColor;transform:rotate(45deg);"></span>
+                <span style="position:absolute;left:1px;top:7px;width:14px;height:1.4px;background:currentColor;transform:rotate(-45deg);"></span>
+              </span>
+            </button>
+          </div>
+          <div data-detail-grid="" style="display:grid;grid-template-columns:.82fr 1.18fr;gap:clamp(28px,3.4vw,60px);align-items:start;">
+            <!-- image: flat -> worn on hover -->
+            <div data-detail-img="" style="position:relative;aspect-ratio:3/4;overflow:hidden;background:var(--ph1);">
+              <img data-di-flat="" data-imgsrc="{{ show.detail.flat }}" alt="{{ show.detail.name }}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;">
+              <img data-di-worn="" data-imgsrc="{{ show.detail.worn }}" alt="{{ show.detail.name }} on model" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;">
+              <span data-di-hint="" style="position:absolute;left:13px;bottom:12px;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.94);background:rgba(20,32,40,.3);padding:6px 11px;backdrop-filter:blur(4px);">{{ show.detail.hintText }}</span>
             </div>
+            <!-- info -->
+            <div>
+              <h3 style="margin:0 0 16px;font-family:'Bodoni 72 Oldstyle','Bodoni Moda',serif;font-weight:400;font-size:clamp(34px,3.6vw,58px);line-height:1;color:var(--ink);">{{ show.detail.name }}</h3>
+              <p style="margin:0 0 30px;font-size:15px;line-height:1.45;color:var(--muted);max-width:46ch;">{{ show.detail.desc }}</p>
+              <div style="display:flex;align-items:baseline;gap:12px;margin-bottom:18px;">
+                <span style="font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink);">{{ show.detail.chooseLabel }}</span>
+                <span style="font-size:14px;color:var(--muted);font-family:'Bodoni 72 Oldstyle','Bodoni Moda',serif;font-style:italic;">{{ show.detail.variantLabel }}</span>
+              </div>
+
+              <!-- colour swatches -->
+              <sc-if value="{{ show.detail.isColor }}" hint-placeholder-val="{{ false }}">
+              <div style="display:flex;gap:18px;margin-bottom:32px;">
+                <sc-for list="{{ show.detail.variants }}" as="v" hint-placeholder-count="2">
+                  <button data-sw="" data-active="{{ v.active }}" onClick="{{ v.select }}" aria-label="{{ v.label }}" style="background:{{ v.swatch }};"></button>
+                </sc-for>
+              </div>
+              </sc-if>
+
+              <!-- necklace styles -->
+              <sc-if value="{{ show.detail.isStyle }}" hint-placeholder-val="{{ false }}">
+              <div data-style-grid="" style="margin-bottom:32px;">
+                <sc-for list="{{ show.detail.variants }}" as="v" hint-placeholder-count="7">
+                  <button data-style-chip="" data-active="{{ v.active }}" onClick="{{ v.select }}">
+                    <div data-chip-img=""><img data-imgsrc="{{ v.thumb }}" alt="{{ v.name }}"></div>
+                    <span style="font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink);padding:9px 4px;">{{ v.name }}</span>
+                  </button>
+                </sc-for>
+              </div>
+              </sc-if>
+
+              <a href="#notify" style="text-decoration:none;color:var(--ink);border-bottom:1px solid var(--ink);padding-bottom:3px;font-size:14px;letter-spacing:.02em;font-weight:500;">Notify me at launch</a>
+            </div>
+          </div>
+        </div>
+        </sc-if>
+
+        <!-- CLOSED ROW -->
+        <div data-show-row="" data-reveal="">
+          <sc-for list="{{ show.products }}" as="p" hint-placeholder-count="4">
+            <button data-show-card="" data-active="{{ p.active }}" onClick="{{ p.open }}">
+              <img data-show-flat="" data-imgsrc="{{ p.previewFlat }}" alt="{{ p.name }}">
+              <img data-show-worn="" data-imgsrc="{{ p.previewWorn }}" alt="{{ p.name }} on model">
+              <div data-show-overlay=""></div>
+              <div data-show-content="">
+                <span data-show-num="" style="font-size:12px;letter-spacing:.1em;color:var(--muted);">{{ p.n }}</span>
+                <div>
+                  <span data-show-name="" style="display:block;font-family:'Bodoni 72 Oldstyle','Bodoni Moda',serif;font-weight:400;font-size:clamp(20px,1.7vw,26px);line-height:1.04;color:var(--ink);margin-bottom:10px;">{{ p.name }}</span>
+                  <span data-show-cue="" style="font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--el);">{{ p.cue }}</span>
+                </div>
+              </div>
+            </button>
           </sc-for>
         </div>
-        <div data-reveal="" style="margin-top:clamp(36px,4vw,64px);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:18px;border-top:1px solid var(--line);padding-top:26px;">
-          <span style="font-size:14px;color:var(--muted);font-style:italic;font-family:'Bodoni Moda',serif;">This is only the first glimpse. The full drop is coming soon.</span>
+
+        <div data-reveal="" style="margin-top:clamp(32px,3.5vw,56px);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:18px;border-top:1px solid var(--line);padding-top:26px;">
+          <span style="font-size:14px;color:var(--muted);font-style:italic;font-family:'Bodoni 72 Oldstyle','Bodoni Moda',serif;">Hover to see each piece worn — open one to explore its colourways and styles.</span>
           <a href="#notify" style="text-decoration:none;color:var(--ink);border-bottom:1px solid var(--ink);padding-bottom:3px;font-size:14px;letter-spacing:.02em;font-weight:500;">Be the first to know</a>
         </div>
       </div>
@@ -299,7 +493,7 @@
 
       <sc-if value="{{ cur.comingSoon }}" hint-placeholder-val="{{ false }}">
       <div data-reveal="" style="border:1px solid var(--line);padding:clamp(48px,8vw,110px) clamp(24px,4vw,60px);text-align:center;">
-        <div style="font-family:'Bodoni Moda',serif;font-size:clamp(40px,6vw,84px);line-height:1;color:var(--ink);margin-bottom:18px;">Coming Soon</div>
+        <div style="font-family:'Bodoni 72 Oldstyle','Bodoni Moda',serif;font-size:clamp(40px,6vw,84px);line-height:1;color:var(--ink);margin-bottom:18px;">Coming Soon</div>
         <p style="margin:0 0 28px;font-size:16px;line-height:1.6;color:var(--muted);">This element will open in a future edition of the MILAURE universe.</p>
         <a href="#notify" style="text-decoration:none;color:var(--ink);border-bottom:1px solid var(--ink);padding-bottom:3px;font-size:14px;letter-spacing:.02em;font-weight:500;">Be the first to know</a>
       </div>
@@ -307,40 +501,45 @@
     </div>
   </section>
 
-  <!-- ============ LAUNCH / SIGN-UP ============ -->
-  <section id="notify" style="color: var(--dark-ink); padding: clamp(64px,9vw,140px) clamp(20px,3.4vw,52px); background-color: #cee0ec">
-    <div data-notify-grid="" style="max-width: 1640px; margin: 0 auto; display: grid; grid-template-columns: 1.05fr .95fr; gap: clamp(34px,6vw,100px); align-items: center; text-align: left; height: 230px">
-      <div data-reveal="" style="width: 100%; height: 100%">
-        <h2 style="margin: 0 0 20px; font-family: 'Bodoni Moda',serif; font-weight: 400; font-size: clamp(32px,4.2vw,64px); line-height: 1; color: #284655">Be the first to enter the world of MILAURE.</h2>
-        <p style="margin: 0 0 32px; font-size: 16px; line-height: 1.2; color: var(--dark-muted); max-width: 46ch">Receive early access to the first drop, launch notes and the first look at upcoming elements.</p>
-        <div style="display: flex; gap: 12px; align-items: center; border-bottom: 1px solid var(--dark-line); padding-bottom: 12px; max-width: 440px; margin: 0; border-color: #284655eb">
-          <input placeholder="Email address" style="flex: 1; background: transparent; border: none; outline: none; color: #284655; font-family: inherit; font-size: 15px">
-          <button style="background: transparent; border: none; color: #284655; font-family: inherit; font-size: 13px; letter-spacing: .1em; text-transform: uppercase; cursor: pointer; border-color: #284655">Join the list</button>
-        </div>
-      </div><div data-reveal="" style="position: relative; overflow: hidden; aspect-ratio: 4/5; background: var(--phd1); height: 100%; width: 100%">
-        <div data-parallax="" style="position: static; inset: -8% 0; background: repeating-linear-gradient(135deg,var(--phd1) 0 13px,var(--phd2) 13px 26px); height: 100%; width: 100%"></div>
-        <span style="position:absolute;left:16px;bottom:14px;font-family:ui-monospace,'SF Mono',Menlo,monospace;font-size:10px;letter-spacing:.14em;color:var(--dark-muted);text-transform:uppercase;">[ campaign image — launch ]</span>
+  <!-- ============ LAUNCH / SIGN-UP (video) ============ -->
+  <section id="notify" data-launch="" style="position:relative;overflow:hidden;color:#F4F0E8;padding:clamp(96px,15vw,200px) clamp(20px,3.4vw,52px) clamp(60px,8vw,120px);">
+    <video data-launch-video="" muted="" loop="" autoplay="" playsinline="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;"><source src="assets/launch.mp4" type="video/mp4"></video>
+    <div style="position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,rgba(18,28,34,.5) 0%,rgba(18,28,34,.42) 30%,rgba(23,37,45,.7) 68%,rgba(26,42,51,.95) 88%,#1A2A33 100%);"></div>
+    <div data-reveal="" style="position:relative;z-index:2;max-width:760px;margin:0 auto;text-align:center;">
+      <div style="font-size:12px;letter-spacing:.26em;text-transform:uppercase;color:rgba(244,240,232,.72);margin-bottom:clamp(20px,2.6vw,34px);">The First Drop — Water</div>
+      <h2 style="margin:0 auto clamp(20px,2.4vw,30px);font-family:'Bodoni 72 Oldstyle','Bodoni Moda',serif;font-weight:400;font-size:clamp(36px,5.6vw,82px);line-height:1.02;max-width:14ch;color:#F8F4EC;">Be the first to enter the world of MILAURE.</h2>
+      <p style="margin:0 auto clamp(36px,4vw,52px);font-size:clamp(15px,1.3vw,18px);line-height:1.5;color:rgba(244,240,232,.8);max-width:46ch;">Receive early access to the first drop, launch notes and the first look at upcoming elements.</p>
+      <div style="display:flex;gap:14px;align-items:center;border-bottom:1px solid rgba(244,240,232,.55);padding-bottom:14px;max-width:440px;margin:0 auto;">
+        <input placeholder="Email address" style="flex:1;background:transparent;border:none;outline:none;color:#F4F0E8;font-family:inherit;font-size:15px;">
+        <button style="background:transparent;border:none;color:#F4F0E8;font-family:inherit;font-size:13px;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;white-space:nowrap;">Join the list</button>
       </div>
-      
+      <div style="margin-top:18px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:rgba(244,240,232,.5);">No spam — only the first word.</div>
     </div>
   </section>
 
   <!-- ============ FOOTER ============ -->
-  <footer style="background:#CFE0EC;color:var(--ink);padding:0 clamp(20px,3.4vw,52px) 38px;border-top:1px solid var(--line);">
+  <footer style="background:#1A2A33;color:#F4F0E8;padding:0 clamp(20px,3.4vw,52px) 40px;">
     <div style="max-width:1820px;margin:0 auto;">
-      <div style="display:flex;justify-content:center;padding:clamp(40px,6vw,90px) 0 clamp(14px,2vw,24px);">
-        <span style="font-family:'Bodoni Moda',serif;font-weight:500;font-size:clamp(56px,17vw,260px);line-height:.86;letter-spacing:.04em;color:var(--ink);">MILAURE</span>
+      <div style="display:flex;justify-content:center;padding:clamp(36px,5vw,72px) 0 clamp(16px,2vw,26px);color:#F4F0E8;">
+        <svg viewBox="0 0 848 301" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Milaure" style="width:clamp(220px,56vw,760px);height:auto;display:block;fill:currentColor;"><path d="M83.715 53.154C89.0982 52.3106 97.0672 53.0335 102.167 54.707C135.558 65.6656 143.323 112.143 148.12 141.671C150.113 153.882 152.032 166.104 153.877 178.338C154.882 184.984 156.06 192.566 157.287 199.212C160.05 214.171 169.471 224.093 177.896 205.263C180.775 198.828 182.832 191.25 185.049 184.336L196.297 149.263C206.443 118.005 217.909 85.1709 227.277 53.9046C236.754 53.6471 250.755 53.6736 260.187 54.1452C258.471 54.6788 256.666 55.2208 255.066 56.0485C251.305 57.994 248.96 61.2516 247.712 65.2403C244.48 75.5654 247.184 125.364 247.51 139.377C247.87 157.785 248.34 176.19 248.92 194.592C249.281 204.995 248.93 220.569 252.156 230.606C253.566 234.991 260.279 237.088 264.489 238.418C248.276 238.683 231.238 238.433 214.931 238.47C224.741 235.101 227.383 232.605 227.958 221.83C228.42 213.177 227.899 204.871 227.613 196.251L226.74 162.139C226.456 150.352 226.347 138.635 225.933 126.841C225.282 108.294 225.887 89.6429 225.351 71.0877C223.936 74.2807 220.403 86.1944 219.026 90.2287L193.55 169.011C190.164 179.652 186.72 190.274 183.217 200.877C179.774 211.264 174.885 229.928 164.157 235.032C150.81 241.428 140.817 229.201 137.168 217.473C127.369 185.973 126.801 151.61 120.501 119.292C117.899 105.948 114.687 93.8805 108.631 81.8624C108.439 90.2751 105.466 108.615 104.25 117.851L95.9832 182.106C94.4682 193.655 92.5179 205.57 92.4761 217.22C92.4206 232.757 98.0875 234.929 111.125 238.532C103.147 238.415 95.1265 238.259 87.1517 238.258C79.7934 238.257 72.7059 238.704 65.3438 238.03C78.6096 235.136 83.9481 231.99 87.3322 217.693C89.8853 206.909 90.9238 195.847 92.3643 184.877C93.5837 175.592 94.7634 166.216 96.0072 156.926C98.1682 141.342 100.194 125.739 102.086 110.12C103.356 100.317 105.442 85.8984 105.745 76.2726C90.1896 53.8326 71.9663 56.4343 50.0239 66.5665C58.5333 58.9073 72.4524 54.3803 83.715 53.154Z" fill="currentColor"></path>
+<path d="M418.435 110.294C424.318 109.597 433.213 110.512 438.815 112.231C445.714 114.386 451.85 118.483 456.483 124.032C474.437 145.263 466.545 183.222 466.951 208.638C467.071 216.26 466.437 223.432 470.218 230.655C473.182 236.315 478.284 236.946 483.865 238.611C479.497 239.068 469.556 238.678 465.312 237.605C456.703 235.428 452.136 231.447 447.647 224.167C438.522 234.006 430.124 237.86 416.85 239.157C396 241.192 372.896 232.526 370.787 208.906C371.842 166.613 426.745 163.437 447.485 138.295C446.62 126.694 441.991 115.85 429.346 113.57C404.896 109.163 388.261 138.337 384.497 158.733L383.966 158.914C383.696 157.322 384.022 155.688 384.234 154.09C385.589 143.897 385.077 133.313 386.215 123.142C393.648 115.449 407.982 111.39 418.435 110.294ZM447.171 143.639C426.19 166.467 391.607 176.026 392.862 212.574C393.112 219.859 395.172 225.034 399.871 230.627C419.561 247.778 444.592 223.27 443.035 204.58C442.261 195.238 449.423 146.402 447.171 143.639Z" fill="currentColor"></path>
+<path d="M746.414 109.893C763.606 109.166 787.431 118.431 790.412 136.826C795.948 170.987 736.621 166.991 723.044 191.279C720.092 196.56 716.834 201.374 718.258 207.925C723.475 226.172 743.462 235.474 761.233 231.727C774.852 228.856 782.077 221.301 789.174 210.821C790.971 207.653 792.094 205.646 794.305 202.733C792.698 210.336 787.857 218.238 782.863 224.185C765.456 244.908 730.22 244.829 710.502 227.448C682.801 203.026 685.878 153.667 709.045 127.248C718.966 115.933 731.69 110.912 746.414 109.893ZM772.404 139.217C772.16 121.632 761.072 111.421 743.669 113.127C711.939 120.026 708.067 170.004 713.769 195.626C714.158 197.359 714.618 199.075 715.152 200.769C717.272 194.133 719.339 188.806 724.436 183.686C730.812 177.463 736.592 173.778 744.261 169.18C755.925 162.186 772.491 155.211 772.404 139.217Z" fill="currentColor"></path>
+<path d="M586.155 110.943L586.735 111.087C587.323 111.914 586.822 132.034 586.814 135.133L586.847 192.023C586.859 202.746 586.019 220.328 588.892 230.455C590.072 234.62 595.579 236.77 599.351 238.338C588.971 237.946 578.147 238.804 567.758 238.238C566.976 231.18 566.442 224.098 566.152 217.003C563.506 221.405 560.566 226.5 556.786 229.954C548.856 237.2 537.987 240.21 527.42 239.785C521.081 239.517 514.908 237.67 509.463 234.412C491.774 223.643 493.558 203.188 493.654 185.304L493.794 154.146C493.823 145.637 495.14 137.017 489.273 130.641C485.534 128.254 484.346 128.253 479.828 127.66C487.505 123.63 495.774 120.306 503.459 116.236C507.057 114.333 510.916 112.34 514.713 110.923C515.098 120.441 514.808 130.686 514.792 140.249L514.866 179.671C514.816 190.825 514.452 202.6 515.607 213.687C516.15 218.07 517.885 221.855 520.145 225.505C526.302 235.44 542.625 236.202 551.639 230.007C558.662 225.18 563.775 213.759 564.918 205.254C566.558 193.026 565.398 179.945 565.734 167.571C565.423 158.238 566.33 148.542 565.456 139.256C564.665 130.816 561.104 128.65 553.506 127.52C562.173 122.658 577.137 115.016 586.155 110.943Z" fill="currentColor"></path>
+<path d="M353.017 43.4277C354.098 47.0464 353.393 70.2474 353.399 75.778L353.482 170.13C353.499 186.249 353.161 202.419 353.677 218.52C354.065 230.643 355.923 234.263 366.992 238.452L320.722 238.407C320.555 237.154 325.578 236.242 326.853 235.264C335.387 228.719 332.877 207.622 332.783 197.779L332.537 159.521L332.599 105.531C332.617 95.0312 333.832 75.8525 330.288 65.4446C329.027 61.7436 322.847 60.5305 319.088 59.724C330.893 55.3903 342.255 49.933 353.017 43.4277Z" fill="currentColor"></path>
+<path d="M671.601 110.289C678.317 109.715 685.729 111.753 691.336 115.495C690.288 119.852 688.226 124.987 686.702 129.353C684.313 136.192 683.274 140.864 682.119 147.961C680.437 137.907 680.16 126.307 668.579 121.918C649.938 114.855 639.839 139.258 638.924 154.007C638.298 164.089 638.547 174.2 638.538 184.304C638.878 196.343 637.955 208.593 638.675 220.605C639.333 231.505 642.236 235.068 651.702 238.679C641.304 238.255 630.025 238.454 619.57 238.49C613.835 238.417 608.101 238.419 602.37 238.497C612.241 236.086 616.299 233.695 617.09 222.523C617.947 210.435 617.496 198.169 617.525 186.045C617.57 176.019 617.562 165.993 617.492 155.967C617.405 143.892 620.208 129.682 604.925 127.853C609.869 124.848 615.305 122.359 620.502 119.76C626.58 116.723 632.804 113.345 638.99 110.59C638.572 120.845 638.505 131.112 638.791 141.372C645.143 124.436 651.88 112.702 671.601 110.289Z" fill="currentColor"></path>
+<path d="M302.243 110.896L302.752 111.03C305.024 114.72 300.804 215.52 304.251 227.477C306.503 235.291 309.371 235.683 316.524 238.48C301.077 238.349 285.629 238.319 270.182 238.389C270.35 236.815 274.53 236.565 276.602 234.73C280.589 231.2 281.719 225.505 281.825 220.374C282.114 206.253 281.962 191.857 281.979 177.725L281.954 153.565C281.874 141.349 284.255 129.015 268.448 128.196C279.714 122.062 291.012 117.231 302.243 110.896Z" fill="currentColor"></path>
+<path d="M290.875 72.983C296.879 72.1814 302.396 76.3983 303.197 82.4013C303.999 88.4044 299.782 93.9209 293.779 94.7229C287.775 95.5249 282.258 91.308 281.456 85.3045C280.654 79.3011 284.871 73.7846 290.875 72.983Z" fill="currentColor"></path></svg>
       </div>
-      <div style="text-align:center;color:var(--muted);margin-bottom:clamp(34px,4vw,56px);">
-        <div style="font-family:'Bodoni Moda',serif;font-weight:500;font-size:13px;letter-spacing:.22em;text-transform:uppercase;">Woman as Elements</div>
+      <div style="text-align:center;color:rgba(244,240,232,.62);margin-bottom:clamp(34px,4vw,56px);">
+        <div style="font-family:'Bodoni 72 Oldstyle','Bodoni Moda',serif;font-weight:500;font-size:13px;letter-spacing:.22em;text-transform:uppercase;">Woman as Elements</div>
       </div>
-      <div data-foot-links="" style="display:flex;justify-content:center;gap:clamp(22px,4vw,56px);flex-wrap:wrap;font-size:14px;padding:clamp(26px,3vw,40px) 0;border-top:1px solid var(--line);">
-        <a data-link="" href="#" style="">Instagram</a>
-        <a data-link="" href="#notify" style="">Contact</a>
-        <a data-link="" href="About.dc.html" style="">About</a>
-        <a data-link="" href="#" style="">Privacy</a>
+      <div data-foot-links="" style="display:flex;justify-content:center;gap:clamp(22px,4vw,56px);flex-wrap:wrap;font-size:14px;padding:clamp(26px,3vw,40px) 0;border-top:1px solid rgba(244,240,232,.16);">
+        <a data-link="" href="#" style="color:rgba(244,240,232,.82);">Instagram</a>
+        <a data-link="" href="#notify" style="color:rgba(244,240,232,.82);">Contact</a>
+        <a data-link="" href="About.dc.html" style="color:rgba(244,240,232,.82);">About</a>
+        <a data-link="" href="#" style="color:rgba(244,240,232,.82);">Privacy</a>
       </div>
-      <div style="display:flex;justify-content:center;flex-wrap:wrap;gap:14px clamp(20px,4vw,48px);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);text-align:center;">
+      <div style="display:flex;justify-content:center;flex-wrap:wrap;gap:14px clamp(20px,4vw,48px);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(244,240,232,.5);text-align:center;">
         <span>© 2026 Milaure — Woman as Elements</span>
         <span>The first story begins with water</span>
       </div>
@@ -362,10 +561,13 @@ const ELEMENTS = {
     ],
     moodWords: "Water, satin, skin, sea.",
     moodCaption: "water, satin, skin, sea, softness.",
-    moodTiles: ["[ water surface ]", "[ satin on skin ]", "[ open sea ]"],
+    moodTiles: [
+      { img: "assets/mood/water-surface.jpg", label: "Water surface" },
+      { img: "assets/mood/water-veil.jpg", label: "Sheer on skin" },
+      { img: "assets/mood/water-hand.jpg", label: "Open sea" },
+    ],
     glimpseIntro: "The first MILAURE story begins with Water — a soft preview of fluid silhouettes, open backs, light fabrics and pieces designed to move with you.",
     glimpse: [
-      { n: "01", name: "Water Mini Set", note: "A soft two-piece made for movement, travel and warm days." },
       { n: "02", name: "Water Maxi", note: "A fluid silhouette for sunlight, evenings and everything in between." },
       { n: "03", name: "Water Long Sleeve", note: "Clean from the front, open from the back, quietly confident." },
       { n: "04", name: "Water Flow", note: "Soft draping and easy lines with a feminine point of view." },
@@ -407,7 +609,7 @@ const ELEMENTS = {
 };
 
 class Component extends DCLogic {
-  state = { soundOn: false, doorGone: false, selected: "water", menuOpen: false };
+  state = { soundOn: false, doorGone: (() => { try { return localStorage.getItem("milaure_entered") === "1"; } catch (e) { return false; } })(), selected: "water", menuOpen: false, openProduct: null, variants: { mini: "blue", breeze: "blue", neck: "wave", shell: "blue" } };
 
   applyAttrs() {
     const el = document.documentElement;
@@ -434,16 +636,27 @@ class Component extends DCLogic {
     });
 
     const start = () => {
-      const v = document.querySelector("[data-hero-video]");
-      if (!v) return;
-      v.muted = true; v.loop = true; v.playsInline = true;
-      const p = v.play(); if (p && p.catch) p.catch(() => {});
+      document.querySelectorAll("[data-hero-video],[data-hero-glow],[data-launch-video]").forEach((v) => {
+        v.muted = true; v.loop = true; v.playsInline = true;
+        const p = v.play(); if (p && p.catch) p.catch(() => {});
+      });
     };
     start();
     setTimeout(start, 400);
+    this.hydrateImages();
+
   }
 
-  componentDidUpdate() { this.applyAttrs(); }
+  hydrateImages() {
+    document.querySelectorAll("[data-imgsrc]").forEach((img) => {
+      const want = img.getAttribute("data-imgsrc");
+      if (want && want.indexOf("{{") === -1 && img.getAttribute("src") !== want) {
+        img.setAttribute("src", want);
+      }
+    });
+  }
+
+  componentDidUpdate() { this.applyAttrs(); this.hydrateImages(); }
 
   componentWillUnmount() {
     if (this._onScroll) window.removeEventListener("scroll", this._onScroll);
@@ -454,9 +667,117 @@ class Component extends DCLogic {
 
   renderVals() {
     const base = ELEMENTS[this.state.selected] || ELEMENTS.water;
-    const cur = { ...base, bodyText: base.body.join(" ") };
+    const moodTiles = (base.moodTiles || []).map((t) => {
+      const o = typeof t === "string" ? { label: t, img: null } : { ...t };
+      return { img: o.img || null, noImg: !o.img, label: o.label, labelColor: o.img ? "#FFFFFF" : "rgba(28,42,50,.82)" };
+    });
+    const cur = { ...base, moodTiles, bodyText: base.body.join(" ") };
+    const P = "assets/products/";
+    const PRODUCTS = [
+      { key: "mini", n: "01", name: "Water Draped Mini", type: "color",
+        desc: "An asymmetric draped jersey mini with a soft cut-out waist and ruched skirt — made to move with you. The first silhouette of the Water story.",
+        previewFlat: P + "mini-blue-flat.jpg", preview: P + "mini-blue-worn.jpg",
+        variants: [
+          { id: "blue", label: "Tiffany Blue", swatch: "#A9E0E4", flat: P + "mini-blue-flat.jpg", worn: P + "mini-blue-worn.jpg" },
+          { id: "white", label: "White", swatch: "#F2EFE8", flat: P + "mini-white-flat.jpg", worn: P + "mini-white-worn.jpg" },
+        ] },
+      { key: "breeze", n: "02", name: "Water Breeze", type: "color",
+        desc: "A bias-cut satin slip maxi with a low draped back and a high leg slit — fluid, weightless and quietly bare. Made for warm evenings by the water.",
+        previewFlat: P + "breeze-blue-flat.jpg", preview: P + "breeze-blue-worn.jpg",
+        variants: [
+          { id: "blue", label: "Sky Blue", swatch: "#BBDCE4", flat: P + "breeze-blue-flat.jpg", worn: P + "breeze-blue-worn.jpg" },
+          { id: "white", label: "Ivory", swatch: "#F2EFE8", flat: P + "breeze-white-flat.jpg", worn: P + "breeze-white-worn.jpg" },
+        ] },
+      { key: "neck", n: "03", name: "Back Charm Necklaces", type: "style",
+        desc: "Delicate 18k-gold lariats made to fall down an open back. Seven charms drawn from the sea — choose the one that moves with you.",
+        previewFlat: P + "neck-pearldrop-flat.jpg", preview: P + "neck-pearldrop-worn.jpg",
+        variants: [
+          { id: "wave", name: "Wave", flat: P + "neck-wave-flat.jpg", worn: P + "neck-wave-worn.jpg" },
+          { id: "drop", name: "Drop", flat: P + "neck-drop-flat.jpg", worn: P + "neck-drop-worn.jpg" },
+          { id: "pearldrop", name: "Pearl Drop", flat: P + "neck-pearldrop-flat.jpg", worn: P + "neck-pearldrop-worn.jpg" },
+          { id: "oceanshell", name: "Ocean Shell", flat: P + "neck-oceanshell-flat.jpg", worn: P + "neck-oceanshell-worn.png" },
+          { id: "cleardrop", name: "Clear Drop", flat: P + "neck-cleardrop-flat.jpg", worn: P + "neck-cleardrop-worn.jpg" },
+          { id: "moonshell", name: "Moon Shell", flat: P + "neck-moonshell-flat.jpg", worn: P + "neck-moonshell-worn.png" },
+          { id: "doublewave", name: "Double Wave", flat: P + "neck-doublewave-flat.png", worn: P + "neck-doublewave-worn.jpg" },
+        ] },
+      { key: "shell", n: "04", name: "Shell Dress", type: "color",
+        desc: "A paillette-sequin slip mini scattered with disc scales that catch the light like sun on water. Weightless, bare-backed and made to dance.",
+        previewFlat: P + "shell-blue-flat.jpg", preview: P + "shell-blue-worn.jpg",
+        variants: [
+          { id: "blue", label: "Aqua", swatch: "#7FD0E6", flat: P + "shell-blue-flat.jpg", worn: P + "shell-blue-worn.jpg" },
+          { id: "white", label: "Iridescent", swatch: "#ECE7DD", flat: P + "shell-white-flat.jpg", worn: P + "shell-white-worn.jpg" },
+        ] },
+    ];
+    const openIdx = this.state.openProduct;
+    const products = PRODUCTS.map((p, i) => ({
+      n: p.n, name: p.name, previewFlat: p.previewFlat, previewWorn: p.preview,
+      active: openIdx === i ? "1" : null,
+      cue: openIdx === i ? "Viewing" : (p.type === "style" ? "View styles" : "View colours"),
+      open: () => this.setState({ openProduct: this.state.openProduct === i ? null : i }),
+    }));
+    let detail = { variants: [], isColor: false, isStyle: false };
+    if (openIdx != null && PRODUCTS[openIdx]) {
+      const p = PRODUCTS[openIdx];
+      const selId = this.state.variants[p.key] || p.variants[0].id;
+      const sv = p.variants.find((v) => v.id === selId) || p.variants[0];
+      detail = {
+        n: p.n, name: p.name, desc: p.desc,
+        flat: sv.flat, worn: sv.worn,
+        isColor: p.type === "color", isStyle: p.type === "style",
+        chooseLabel: p.type === "color" ? "Colour" : "Style",
+        variantLabel: sv.label || sv.name,
+        hintText: p.type === "style" ? "Hover — on the back" : "Hover — on the model",
+        variants: p.variants.map((v) => ({
+          id: v.id, label: v.label || v.name, name: v.name, swatch: v.swatch, thumb: v.flat,
+          active: v.id === selId ? "1" : null,
+          select: () => this.setState({ variants: { ...this.state.variants, [p.key]: v.id } }),
+        })),
+      };
+    }
+    const show = {
+      products, detail,
+      open: openIdx != null,
+      close: () => this.setState({ openProduct: null }),
+    };
+
+    // sneak strip (small squares) + marquee — data-driven per element
+    let sneak;
+    if (base.isDrop) {
+      const worn = [
+        { img: P + "breeze-white-worn.jpg", label: "Water Breeze — White", fit: "cover" },
+        { img: P + "neck-pearldrop-worn.jpg", label: "Pearl Drop — on the back", fit: "cover" },
+        { img: P + "neck-cleardrop-cutout.png", label: "Clear Drop necklace", fit: "contain" },
+        { img: P + "shell-white-cutout.png", label: "Shell Dress — White", fit: "contain" },
+        { img: P + "mini-blue-worn.jpg", label: "Water Draped Mini — Tiffany Blue", fit: "cover" },
+        { img: P + "shell-blue-worn.jpg", label: "Shell Dress — Aqua", fit: "cover" },
+      ];
+      sneak = {
+        eyebrow: "The First Drop Reflects",
+        intro: "A first look at the Water collection — sculptural draping, satin and open backs, paired with fine gold charms made to fall down the spine. Soft pieces shaped to move with real life.",
+        tag: "First Edition",
+        href: "#glimpse",
+        items: worn.map((w, i) => ({ n: String(i + 1).padStart(2, "0"), img: w.img, label: w.label, fit: w.fit, noImg: false })),
+      };
+    } else {
+      sneak = {
+        eyebrow: base.name + " Reflects",
+        intro: base.glimpseIntro,
+        tag: "Future Edition",
+        href: "#notify",
+        items: Array.from({ length: 6 }, (_, i) => ({ n: String(i + 1).padStart(2, "0"), img: null, label: "Coming soon", noImg: true })),
+      };
+    }
+    const marqueeWords = base.isDrop
+      ? ["Water", "Skin", "Glow", "Satin", "Sea", "Softness", "Movement", "Flow", "Sheer", "Light", "Draped", "Open Back", "Weightless", "Tiffany Blue"]
+      : [base.name, base.moodWords.replace(/\.$/, ""), "Coming Soon", "Woman as Elements"];
+    const marqueeLoop = [];
+    for (let i = 0; i < 2; i++) marqueeWords.forEach((w) => marqueeLoop.push({ word: w }));
+
     return {
       cur,
+      show,
+      sneak,
+      marqueeLoop,
       menuOpen: this.state.menuOpen,
       toggleMenu: () => {
         const o = !this.state.menuOpen;
@@ -475,6 +796,7 @@ class Component extends DCLogic {
         document.body.style.overflow = "";
         const hv = document.querySelector("[data-hero-video]");
         if (hv) { const p = hv.play(); if (p && p.catch) p.catch(() => {}); }
+        try { localStorage.setItem("milaure_entered", "1"); } catch (e) {}
         setTimeout(() => this.setState({ doorGone: true }), 1250);
       },
       soundLabel: this.state.soundOn ? "Sound on" : "Sound off",
